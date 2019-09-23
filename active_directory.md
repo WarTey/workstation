@@ -67,4 +67,35 @@ Rappel : le nom d'utilisateur est par défaut 'root'.
 
 ![Cliquez sur cette dernière pour voir son tableau de bord.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_proxmox/capture_14.png)
 
+## Installation de Debian
+
+1. Une fois votre machine virtuelle créée dans Proxmox, cliquez sur 'Démarrer' (situé en haut à droite dans le résumé de votre machine virtuelle) et attendez de voir 'VM {ID} - Démarrer' dans les 'Tâches'.
+
+![Une fois votre machine virtuelle créée dans Proxmox , cliquez sur 'Démarrer' (situé en haut à droite dans le résumé de votre machine virtuelle) et attendez de voir 'VM {ID} - Démarrer' dans les 'Tâches'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/install_debian/capture_1.png)
+
+2. Dans le tableau de bord de votre machine virtuelle sélectionnez 'Console' et vous devriez voir l'écran ci-dessous apparaître. Commencez une installation classique.
+
+![Dans le tableau de bord de votre machine virtuelle sélectionnez 'Console' et vous devriez voir l'écran ci-dessous apparaître.](https://raw.githubusercontent.com/WarTey/workstation/master/img/install_debian/capture_2.png)
+
+3. Pour la configuration du réseau, choisissez comme 'Nom de machine' : Debian.AD.
+
+![Pour la configuration du réseau, choisissez comme 'Nom de machine' : Debian.AD.](https://raw.githubusercontent.com/WarTey/workstation/master/img/install_debian/capture_3.png)
+
+4. Pour la création de l'utilisateur, choisissez comme 'Nom complet du nouvel utilisateur' : Debian AD.
+
+![Pour la création de l'utilisateur, choisissez comme 'Nom complet du nouvel utilisateur' : Debian AD.](https://raw.githubusercontent.com/WarTey/workstation/master/img/install_debian/capture_4.png)
+
+5. Pour la création de l'utilisateur, choisissez comme 'Identifiant pour le compte utilisateur' : ad.
+
+![Pour la création de l'utilisateur, choisissez comme 'Identifiant pour le compte utilisateur' : ad.](https://raw.githubusercontent.com/WarTey/workstation/master/img/install_debian/capture_5.png)
+
+6. Pour la sélection des logiciels, cochez seulement 'serveur SSH' et 'utilitaires usuels du système'.
+
+![Pour la sélection des logiciels, cochez seulement 'serveur SSH' et 'utilitaires usuels du système'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/install_debian/capture_6.png)
+
+7. Une fois l'installation terminée, cliquez sur 'Continuer' et attendez que la machine virtuelle redémarre.
+
+![Une fois l'installation terminée, cliquez sur 'Continuer' et attendez que la machine virtuelle redémarre.](https://raw.githubusercontent.com/WarTey/workstation/master/img/install_debian/capture_7.png)
+
 ## Configuration de l'active directory
+
