@@ -4,7 +4,7 @@ Tutoriel réalisé par l'équipe workstation 2019-2020.
 
 ## Installation de Proxmox
 
-Voir [proxmox.md](https://github.com/WarTey/workstation).
+Voir [proxmox.md](https://github.com/WarTey/workstation/blob/master/proxmox.md).
 
 ## Installation de l'active directory
 
