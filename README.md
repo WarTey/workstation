@@ -8,7 +8,7 @@ Voir [proxmox.md](https://github.com/WarTey/workstation/blob/master/proxmox.md).
 
 ## Installation de l'active directory
 
-Voir [active_directory.md](https://github.com/WarTey/workstation).
+Voir [active_directory.md](https://github.com/WarTey/workstation/blob/master/active_directory.md).
 
 ## Contribution
 
