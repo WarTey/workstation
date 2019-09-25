@@ -99,3 +99,126 @@ Rappel : le nom d'utilisateur est par défaut 'root'.
 
 ## Configuration de l'active directory
 
+1. Dans la machine virtuelle, connectez-vous avec l'utilisateur 'root'.
+
+![Dans la machine virtuelle, connectez-vous avec l'utilisateur 'root'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_1.png)
+
+2. Définissez un 'hostname' nommé 'ad'.
+
+```bash
+hostnamectl set-hostname ad
+```
+
+3. Redémarrez la machine virtuelle.
+
+```bash
+reboot
+```
+
+4. Reconnectez-vous en tant que 'root'.
+
+![Reconnectez-vous en tant que 'root'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_1.png)
+
+5. Installez les paquets ci-dessous.
+
+```bash
+apt install samba krb5-user krb5-config winbind libpam-winbind libnss-winbind -y
+```
+
+6. Sélectionnez 'Oui'.
+
+![Sélectionnez 'Oui'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_2.png)
+
+7. Saisissez le royaume 'CYBER.LAN'. Attention aux majuscules.
+
+![Saisissez le 'Royaume' : 'CYBER.LAN'. Attention aux majuscules.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_3.png)
+
+7. Saisissez pour serveur kerberos 'cyber.lan'.
+
+![Saisissez pour 'Serveur Kerberos' : 'cyber.lan'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_4.png)
+
+8. Saisissez pour serveur administratif 'cyber.lan'.
+
+![Saisissez pour 'Serveur administratif' : 'cyber.lan'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_5.png)
+
+9. Arrêter et désactiver les services samba daemons.
+
+```bash
+systemctl stop samba-ad-dc.service smbd.service nmbd.service winbind.service
+systemctl disable samba-ad-dc.service smbd.service nmbd.service winbind.service
+```
+
+10. Renommez le fichier de configuration samba.
+
+```bash
+mv /etc/samba/smb.conf /etc/samba/smb.conf.old
+```
+
+11. Utilisez la commande ci-dessous pour lancer la configuration du serveur samba.
+
+```bash
+samba-tool domain provision --use-rfc2307 --interactive
+```
+
+12. Saisissez comme 'Realm' : 'CYBER.LAN' puis continuez en appuyant 4 fois sur la touche 'Entrée' et choisissez un mot de passe pour 'Administrator'.
+
+![Saisissez comme 'Realm' : 'CYBER.LAN' puis continuez en appuyant 4 fois sur la touche 'Entrée' et choisissez un mot de passe pour 'Administrator'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_6.png)
+
+13. Renommez le fichier de configuration krb5 et créer un lien symbolique sur ce dernier vers le répertoire '/etc'.
+
+```bash
+mv /etc/krb5.conf /etc/krb5.conf.old
+ln -s /var/lib/samba/private/krb5.conf /etc/
+```
+14. Démarrez et activez les services samba daemons.
+
+```bash
+systemctl unmask samba-ad-dc.service
+systemctl start samba-ad-dc.service
+systemctl enable samba-ad-dc.service
+```
+
+15. Modifiez le fichier '/etc/network/interfaces' et '/etc/resolv.conf' comme ci-dessous.
+
+```bash
+nano /etc/network/interfaces
+nano /etc/resolv.conf
+```
+
+![Modifiez le fichier '/etc/network/interfaces'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_7.png)
+
+![Modifiez le fichier '/etc/resolv.conf'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_8.png)
+
+16. Redémarrez la machine virtuelle.
+
+```bash
+reboot
+```
+
+17. Reconnectez-vous en tant que 'root'.
+
+![Reconnectez-vous en tant que 'root'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_1.png)
+
+18. Exécutez les commandes suivantes.
+
+```bash
+host -t A cyber.lan
+host -t A ad.cyber.lan
+host -t SRV _kerberos._udp.cyber.lan
+host -t SRV _ldap._tcp.cyber.lan
+```
+
+19. Vérifiez l'identifiant 'Kerberos' en demandant un ticket avec les commandes ci-dessous.
+
+```bash
+kinit administrator@CYBER.LAN
+klist
+```
+
+20. Redémarrez la machine virtuelle.
+
+```bash
+reboot
+```
+
+21. La configuration de l'active directory est maintenant terminée.
