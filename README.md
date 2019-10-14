@@ -14,12 +14,11 @@ Voir [active_directory.md](https://github.com/WarTey/workstation/blob/master/act
 ### Pour voir uniquement l'installation des scripts :
 Voir [scripts#installation-des-scripts](https://github.com/WarTey/workstation/blob/master/active_directory.md#installation-des-scripts).
 
-### Pour voir uniquement la partie hébergement Web :
-Voir [scripts#utilisation-des-scripts](https://github.com/WarTey/workstation/blob/master/active_directory.md#utilisation-des-scripts).
-
 ### Pour voir uniquement la gestion et l'utilisation des scripts :
 Voir [scripts#hebergement-web](https://github.com/WarTey/workstation/blob/master/active_directory.md#hebergement-web).
 
+### Pour voir uniquement la partie hébergement Web :
+Voir [scripts#utilisation-des-scripts](https://github.com/WarTey/workstation/blob/master/active_directory.md#utilisation-des-scripts).
 
 ## Contribution
 
