@@ -35,7 +35,7 @@ Rappel : le nom d'utilisateur est par défaut 'root'.
 
 ![Votre image ISO devrait maintenant appraître comme sur l'image ci-dessous.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_proxmox/capture_6.png)
 
-7. Cliquez maintenant sur 'Créer VM' (premier bouton bleu en haut à gauche).
+7. Cliquez maintenant sur 'Créer VM' (premier bouton bleu en haut à droite).
 
 ![Cliquez maintenant sur 'Créer VM' (premier bouton bleu en haut à gauche).](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_proxmox/capture_7.png)
 
