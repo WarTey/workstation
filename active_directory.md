@@ -408,11 +408,11 @@ Diriger vous maintenant dans le dossier apache par défaut et importer notre int
 Si git n'est pas encore installé : 
 
 >	```bash
-sudo apt update
-sudo apt install git
-```	
+>sudo apt update
+>sudo apt install git
+>```	
 
-```bash 
+```bash
 cd /var/www/html
 rm -R '/var/www/html'/*
 git init '/var/www/html/'
