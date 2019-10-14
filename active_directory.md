@@ -227,7 +227,7 @@ reboot
 Pour une meilleure maintenance du serveur, il est conseillé de créer un dossier 'scripts'. Ce dernier contiendra tous les fichiers automatisés et les scripts. ```mkdir ~/scripts```
 
 Nous proposons un système permettant d'automatiser la gestion de l'inscription des utilisateurs dans l'AD. Ce qui signifie que les utilisateurs renseignés pourront recevoir un lien par mail, leurs permettant ainsi de choisir leur mot de passe en ligne (leur futur log-in). Nous expliquerons comment les scripts fonctionnent mais aussi comment héberger le site internet.
-###Création d'un fichier de base de données utilisateurs
+### Création d'un fichier de base de données utilisateurs
 Pour utiliser notre système, il faut créer un fichier que nous nommerons étudiants. C'est dans ce dernier que vous devez renseigner tous les utilisateurs. (ne vous préocuppez pas des email pour le moment). 
 
 ```touch ~/scripts/etudiants```
@@ -289,7 +289,7 @@ fi
 ```
 Ce script va ainsi créer un fichier newDatabase contenant tous les utilisateurs et leurs clés/url respectives.
 Vous noterez que pour utiliser ce script, on importe le contenu d'un fichier email, correspondant à notre template qui sera envoyé par mail. C'est l'objet de notre prochaine rubrique.
-###Création d'un template d'email pour la notification
+### Création d'un template d'email pour la notification
 
 Toujours dans le dossier script, créer un fichier email et emailTemplate et éditer ce dernier. 
 
@@ -314,7 +314,7 @@ https://cyber.isen.fr?url=*url
 Vous noterez que les '*' permettent de créer des variables, que nous remplissons avec le script generateUrlFromDatabase.sh 
 Aussi, le fichier mail ne sert à rien d'autre que d'être rempli par notre template sans le modifier pour ainsi garder les variables.
 
-###Ajouter des utilisateurs à notre AD
+### Ajouter des utilisateurs à notre AD
 
 Le rôle de cette partie va en fait être de récupérer les données du site Web que nous allons importer plus tard : Voir [scripts#hebergement-web](https://github.com/WarTey/workstation/blob/master/active_directory.md#hebergement-web).
 Ce dernier écrit simplement à la racine de l'hébergeur un fichier addUserToAD. Nous allons donc le lire depuis un script, pour ajouter nos nouveaux utilisateurs.
@@ -374,14 +374,14 @@ Tout est prêt. Il ne vous reste plus qu'à importer le site web.
 
 ## Utilisation des scripts
 
-###Pour générer les url et envoyer les mails
+### Pour générer les url et envoyer les mails
 
 ```bash 
 bash ~/scripts/generateUrlFromDatabase.sh /chemin/vers/le/fichier/database
 ```
 Aura donc pour effet de générer les url pour tous les utilisateurs présents et de leurs envoyer un mail avec leur lien.
 
-###Facultatif: ajouter des utilisateurs sans cronjobs
+### Facultatif: ajouter des utilisateurs sans cronjobs
 
 Si pour une quelconque raison (cronjob qui ne vous convient pas) et que vous avez besoin d'éxécuter à la main l'ajout des utilisateurs fraichement inscrits : 
 
@@ -405,6 +405,22 @@ sudo systemctl restart apache2
 Ces commandes vous permettront d'avoir apache et php d'installer. Nous conseillons php7.2 mais libre à vous d'utiliser une autre version. 
 Diriger vous maintenant dans le dossier apache par défaut et importer notre interface web.
 
+Si git n'est pas encore installé : 
+
+>	```bash
+sudo apt update
+sudo apt install git
+```	
+
 ```bash 
 cd /var/www/html
+rm -R '/var/www/html'/*
+git init '/var/www/html/'
+cd '/var/www/html/'
+git remote add -f origin https://github.com/WarTey/workstation.git
+git config core.sparseCheckout true
+echo "web/" >> .git/info/sparse-checkout
+git pull origin master
 ```
+
+Ces commandes vont permettre de n'importer uniquement la partie web dans l'hébergeur.
