@@ -424,3 +424,13 @@ git pull origin master
 ```
 
 Ces commandes vont permettre de n'importer uniquement la partie web dans l'hébergeur.
+
+Ensuite on va configurer apache pour rediriger les reqêtes HTML vers notre dossier. Pour ce faire on va utiliser les commandes suivantes.
+
+```bash
+nano /etc/apache2/apache2.conf
+```
+
+Vous pourrez ensuite aller à la ligne correspondant au <directory /var/www> pour le configurer comme ci-dessous.
+
+![Configuration du Fichier apache2.conf](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory_web/apache2.png)
