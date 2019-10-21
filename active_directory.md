@@ -217,10 +217,13 @@ reboot
 20. La configuration de l'active directory est maintenant terminée.
 
 ## Installation des scripts
+
 Pour une meilleure maintenance du serveur, il est conseillé de créer un dossier 'scripts'. Ce dernier contiendra tous les fichiers automatisés et les scripts. ```mkdir ~/scripts```
 
 Nous proposons un système permettant d'automatiser la gestion de l'inscription des utilisateurs dans l'AD. Ce qui signifie que les utilisateurs renseignés pourront recevoir un lien par mail, leurs permettant ainsi de choisir leur mot de passe en ligne (leur futur log-in). Nous expliquerons comment les scripts fonctionnent mais aussi comment héberger le site internet.
+
 ### Création d'un fichier de base de données utilisateurs
+
 Pour utiliser notre système, il faut créer un fichier que nous nommerons étudiants. C'est dans ce dernier que vous devez renseigner tous les utilisateurs. (ne vous préocuppez pas des email pour le moment). 
 
 ```touch ~/scripts/etudiants```
@@ -234,6 +237,7 @@ nomutilisateur1,prenomutilisateur1
 nomutilisateur2,prenomutilisateur2
 ...
 ```
+
 > Si vous utilisez notre système pour l'ISEN, les noms/prénoms composés doivent être séparés d'un '-'.
 
 Une fois ce fichier édité, créer un fichier generateUrlFromDatabase.sh puis éditez le.
@@ -243,6 +247,7 @@ touch ~/scripts/generateUrlFromDatabase.sh
 nano ~/scripts/generateUrlFromDatabase.sh 
 ```
 Ce fichier va permettre de générer des liens uniques pour chaque utilisateur et leur envoyer un mail avec ce dernier de sorte à ce qu'il puisse s'inscrire.
+
 > Si vous utilisez notre système pour l'ISEN, nul besoin de changer les lignes ci-dessous. Si vous l'utilisez pou un autre établissement, il faut adapter les lignes.
 
 ```bash 
@@ -280,8 +285,10 @@ else
 fi
 
 ```
+
 Ce script va ainsi créer un fichier newDatabase contenant tous les utilisateurs et leurs clés/url respectives.
 Vous noterez que pour utiliser ce script, on importe le contenu d'un fichier email, correspondant à notre template qui sera envoyé par mail. C'est l'objet de notre prochaine rubrique.
+
 ### Création d'un template d'email pour la notification
 
 Toujours dans le dossier script, créer un fichier email et emailTemplate et éditer ce dernier. 
@@ -351,13 +358,13 @@ fi
 
 Il faudrait maintenant faire en sorte que ce script se lance régulièrement, pour vérifier si le fichier est vide (personne ne s'est nouvellement inscrit) ou non vide (quelqu'un s'est inscrit).
 
-On va, pour se faire utiliser des crons jobs. (a faire en root (su))
+On va, pour se faire utiliser des crons jobs (à faire en root (su)).
 
 ```bash 
 crontab -e
 ```
 
-et ajouter à la fin du fichier la ligne suivante, qui permettra d'éxécuter chaque minute notre script en fond. **Remplacez 'votreUser' par votre utilisateur.**
+Et ajouter à la fin du fichier la ligne suivante, qui permettra d'éxécuter chaque minute notre script en fond. **Remplacez 'votreUser' par votre utilisateur.**
 
 ```bash 
 * * * * * /home/votreUser/scripts/addUserToDatabase
@@ -372,6 +379,7 @@ Tout est prêt. Il ne vous reste plus qu'à importer le site web.
 ```bash 
 bash ~/scripts/generateUrlFromDatabase.sh /chemin/vers/le/fichier/database
 ```
+
 Aura donc pour effet de générer les url pour tous les utilisateurs présents et de leurs envoyer un mail avec leur lien.
 
 ### Facultatif: ajouter des utilisateurs sans cronjobs
@@ -382,7 +390,8 @@ Si pour une quelconque raison (cronjob qui ne vous convient pas) et que vous ave
 bash ~/scripts/addUserToDatabase
 ```
 
-## Hebergement Web
+## Hébergement Web
+
 Quelques paquets sont nécéssaires pour l'hébergement web. 
 
 ```bash 
@@ -395,6 +404,7 @@ sudo apt install php7.2-common php7.2-cli
 sudo apt install php7.2 libapache2-mod-php
 sudo systemctl restart apache2
 ```
+
 Ces commandes vous permettront d'avoir apache et php d'installer. Nous conseillons php7.2 mais libre à vous d'utiliser une autre version. 
 Diriger vous maintenant dans le dossier apache par défaut et importer notre interface web.
 
@@ -403,7 +413,7 @@ Si git n'est pas encore installé :
 >	```bash
 >sudo apt update
 >sudo apt install git
->```	
+>```
 
 ```bash
 cd /var/www/html
