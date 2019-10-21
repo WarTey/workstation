@@ -218,7 +218,9 @@ reboot
 
 ## Installation des scripts
 
-Pour une meilleure maintenance du serveur, il est conseillé de créer un dossier 'scripts'. Ce dernier contiendra tous les fichiers automatisés et les scripts. ```mkdir ~/scripts```
+Pour une meilleure maintenance du serveur, il est conseillé de créer un dossier 'scripts'. Ce dernier contiendra tous les fichiers automatisés et les scripts.
+
+```mkdir ~/scripts```
 
 Nous proposons un système permettant d'automatiser la gestion de l'inscription des utilisateurs dans l'AD. Ce qui signifie que les utilisateurs renseignés pourront recevoir un lien par mail, leurs permettant ainsi de choisir leur mot de passe en ligne (leur futur log-in). Nous expliquerons comment les scripts fonctionnent mais aussi comment héberger le site internet.
 
@@ -358,7 +360,7 @@ fi
 
 Il faudrait maintenant faire en sorte que ce script se lance régulièrement, pour vérifier si le fichier est vide (personne ne s'est nouvellement inscrit) ou non vide (quelqu'un s'est inscrit).
 
-On va, pour se faire utiliser des crons jobs (à faire en root (su)).
+On va, pour se faire, utiliser des crons jobs (à faire en root (su)).
 
 ```bash 
 crontab -e
