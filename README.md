@@ -7,19 +7,22 @@ Tutoriel réalisé par l'équipe workstation 2019-2020.
 Voir [proxmox.md](https://github.com/WarTey/workstation/blob/master/proxmox.md).
 
 ## Installation de l'active directory
-### Pour une installation complète : 
+
+### Pour une installation depuis le début : 
 
 Voir [active_directory.md](https://github.com/WarTey/workstation/blob/master/active_directory.md).
 
-### Pour voir uniquement l'installation des scripts :
+### Pour une installation à partir de l'installation des scripts :
+
 Voir [active_directory.md#installation-des-scripts](https://github.com/WarTey/workstation/blob/master/active_directory.md#installation-des-scripts).
 
-### Pour voir uniquement la gestion et l'utilisation des scripts :
+### Pour une installation à partir de la gestion et l'utilisation des scripts :
+
 Voir [active_directory.md#utilisation-des-scripts](https://github.com/WarTey/workstation/blob/master/active_directory.md#utilisation-des-scripts).
 
-### Pour voir uniquement la partie hébergement Web :
-Voir [active_directory.md#hebergement-web](https://github.com/WarTey/workstation/blob/master/active_directory.md#hebergement-web).
+### Pour une installation à partir de l'hébergement Web :
 
+Voir [active_directory.md#hebergement-web](https://github.com/WarTey/workstation/blob/master/active_directory.md#hebergement-web).
 
 ## Contribution
 
