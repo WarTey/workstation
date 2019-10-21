@@ -214,7 +214,7 @@ host -t SRV _ldap._tcp.cyber.lan
 reboot
 ```
 
-21. La configuration de l'active directory est maintenant terminée.
+20. La configuration de l'active directory est maintenant terminée.
 
 ## Installation des scripts
 Pour une meilleure maintenance du serveur, il est conseillé de créer un dossier 'scripts'. Ce dernier contiendra tous les fichiers automatisés et les scripts. ```mkdir ~/scripts```
