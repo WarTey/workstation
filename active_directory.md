@@ -208,14 +208,7 @@ host -t SRV _kerberos._udp.cyber.lan
 host -t SRV _ldap._tcp.cyber.lan
 ```
 
-19. Vérifiez l'identifiant 'Kerberos' en demandant un ticket avec les commandes ci-dessous.
-
-```bash
-kinit administrator@CYBER.LAN
-klist
-```
-
-20. Redémarrez la machine virtuelle.
+19. Redémarrez la machine virtuelle.
 
 ```bash
 reboot
