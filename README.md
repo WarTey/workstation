@@ -12,15 +12,15 @@ Voir [proxmox.md](https://github.com/WarTey/workstation/blob/master/proxmox.md).
 
 Voir [active_directory.md](https://github.com/WarTey/workstation/blob/master/active_directory.md).
 
-### Pour une installation à partir de l'installation des scripts :
+### Commencer à partir de l'installation des scripts :
 
 Voir [active_directory.md#installation-des-scripts](https://github.com/WarTey/workstation/blob/master/active_directory.md#installation-des-scripts).
 
-### Pour une installation à partir de la gestion et l'utilisation des scripts :
+### Commencer à partir de la gestion et l'utilisation des scripts :
 
 Voir [active_directory.md#utilisation-des-scripts](https://github.com/WarTey/workstation/blob/master/active_directory.md#utilisation-des-scripts).
 
-### Pour une installation à partir de l'hébergement Web :
+### Commencer à partir de l'hébergement Web :
 
 Voir [active_directory.md#hebergement-web](https://github.com/WarTey/workstation/blob/master/active_directory.md#hebergement-web).
 
