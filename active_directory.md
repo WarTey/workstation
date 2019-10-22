@@ -277,7 +277,7 @@ nano ~/scripts/generateUrlFromDatabase.sh
 ```
 Ce fichier va permettre de générer des liens uniques pour chaque utilisateur et leur envoyer un mail avec ce dernier de sorte à ce qu'il puisse s'inscrire.
 
-> Si vous utilisez notre système pour l'ISEN, nul besoin de changer les lignes ci-dessous. Si vous l'utilisez pou un autre établissement, il faut adapter les lignes.
+> Si vous utilisez notre système pour l'ISEN, nul besoin de changer les lignes ci-dessous. Si vous l'utilisez pour un autre établissement, il faut adapter les lignes.
 
 ```bash 
 #!/bin/bash
