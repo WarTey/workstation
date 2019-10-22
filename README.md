@@ -22,7 +22,7 @@ Voir [active_directory.md#utilisation-des-scripts](https://github.com/WarTey/wor
 
 ### Reprendre à partir de l'hébergement Web :
 
-Voir [active_directory.md#hébergement-web](https://github.com/WarTey/workstation/blob/master/active_directory.md#hebergement-web).
+Voir [active_directory.md#hébergement-web](https://github.com/WarTey/workstation/blob/master/active_directory.md#hébergement-web).
 
 ## Contribution
 
