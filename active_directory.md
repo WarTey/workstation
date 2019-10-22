@@ -289,6 +289,11 @@ fi
 ```
 Ce script va ainsi créer un fichier newDatabase contenant tous les utilisateurs et leurs clés/url respectives.
 Vous noterez que pour utiliser ce script, on importe le contenu d'un fichier email, correspondant à notre template qui sera envoyé par mail. C'est l'objet de notre prochaine rubrique.
+Aussi, il vous sera nécéssaire d'installer ces deux paquets avant d'éxécuter ce bash : 
+>	```bash
+>sudo apt install pwgen
+>sudo apt install sendmail
+>```	
 ### Création d'un template d'email pour la notification
 
 Toujours dans le dossier script, créer un fichier email et emailTemplate et éditer ce dernier. 
