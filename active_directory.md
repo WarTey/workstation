@@ -7,7 +7,7 @@ Tutoriel réalisé par l'équipe workstation 2019-2020.
 1. Serveur Jarvis avec Proxmox installé.
 2. ISO [Debian](https://www.debian.org/distrib/netinst).
 
-## Configuration du serveur Proxmox pour l'active directory
+## <a name="config-proxmox-ad">Configuration du serveur Proxmox pour l'active directory</a>
 
 1. Connectez-vous à l'adresse du serveur Proxmox et ignorer le message qui s'affiche à l'écran en cliquant sur 'visiter ce site web'.
 
@@ -67,7 +67,7 @@ Rappel : le nom d'utilisateur est par défaut 'root'.
 
 ![Cliquez sur cette dernière pour voir son tableau de bord.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_proxmox/capture_14.png)
 
-## Installation de Debian
+## <a name="install-debian">Installation de Debian</a>
 
 1. Une fois votre machine virtuelle créée dans Proxmox, cliquez sur 'Démarrer' (situé en haut à droite dans le résumé de votre machine virtuelle) et attendez de voir 'VM {ID} - Démarrer' dans les 'Tâches'.
 
@@ -170,6 +170,7 @@ samba-tool domain provision --use-rfc2307 --interactive
 mv /etc/krb5.conf /etc/krb5.conf.old
 ln -s /var/lib/samba/private/krb5.conf /etc/
 ```
+
 14. Démarrez et activez les services samba daemons.
 
 ```bash
@@ -215,6 +216,32 @@ reboot
 ```
 
 20. La configuration de l'active directory est maintenant terminée.
+
+## Installation de SAMBA dans une VM extérieur
+
+Le but de cette partie est d'installer un serveur SAMBA dans une VM séparée. La VM SAMBA regroupera les informations concernant les sessions de chaque utilisateurs ainsi que leur dossier personnel.
+
+### Installation de la VM SAMBA dans Proxmox
+
+Afin d'installer la VM dans Proxmox, il suffit de suivre la même procédure que celle décrite dans la section [Configuration du serveur Proxmox pour l'active directory](#config-proxmox-ad). 
+
+Une fois la VM SAMVA ajoutée à Proxmox, il vous suffit d'installer Debian sur cette dernière en suivant les étapes de la section [Installation de Debian](#install-debian).
+
+Une fois les deux étapes réalisées, SAMBA est prêt à être installé.
+
+### Installation de SAMBA
+
+1. Connectez-vous avec l'utilisateur 'root'.
+
+2. Une fois connecter en root, lancer l'installation des paquets samba : 
+
+```bash
+apt install samba
+```
+
+### Configurer SAMBA
+
+
 
 ## Installation des scripts
 
