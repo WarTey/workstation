@@ -129,17 +129,17 @@ apt install samba krb5-user krb5-config winbind libpam-winbind libnss-winbind -y
 
 ![Sélectionnez 'Oui'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_2.png)
 
-7. Saisissez le royaume 'CYBER.LAN'. Attention aux majuscules.
+7. Saisissez le royaume 'CYBER.ISEN.FR'. Attention aux majuscules.
 
-![Saisissez le 'Royaume' : 'CYBER.LAN'. Attention aux majuscules.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_3.png)
+![Saisissez le 'Royaume' : 'CYBER.ISEN.FR'. Attention aux majuscules.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_3.png)
 
-7. Saisissez pour serveur kerberos 'cyber.lan'.
+7. Saisissez pour serveur kerberos 'cyber.isen.fr'.
 
-![Saisissez pour 'Serveur Kerberos' : 'cyber.lan'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_4.png)
+![Saisissez pour 'Serveur Kerberos' : 'cyber.isen.fr'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_4.png)
 
-8. Saisissez pour serveur administratif 'cyber.lan'.
+8. Saisissez pour serveur administratif 'cyber.isen.fr'.
 
-![Saisissez pour 'Serveur administratif' : 'cyber.lan'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_5.png)
+![Saisissez pour 'Serveur administratif' : 'cyber.isen.fr'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_5.png)
 
 9. Arrêter et désactiver les services samba daemons.
 
