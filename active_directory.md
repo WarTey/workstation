@@ -160,9 +160,9 @@ mv /etc/samba/smb.conf /etc/samba/smb.conf.old
 samba-tool domain provision --use-rfc2307 --interactive
 ```
 
-12. Saisissez comme 'Realm' : 'CYBER.LAN' puis continuez en appuyant 4 fois sur la touche 'Entrée' et choisissez un mot de passe pour 'Administrator'.
+12. Saisissez comme 'Realm' : 'CYBER.ISEN.FR' puis continuez en appuyant 4 fois sur la touche 'Entrée' et choisissez un mot de passe pour 'Administrator'.
 
-![Saisissez comme 'Realm' : 'CYBER.LAN' puis continuez en appuyant 4 fois sur la touche 'Entrée' et choisissez un mot de passe pour 'Administrator'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_6.png)
+![Saisissez comme 'Realm' : 'CYBER.ISEN.FR' puis continuez en appuyant 4 fois sur la touche 'Entrée' et choisissez un mot de passe pour 'Administrator'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_6.png)
 
 13. Renommez le fichier de configuration krb5 et créer un lien symbolique sur ce dernier vers le répertoire '/etc'.
 
