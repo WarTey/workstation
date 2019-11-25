@@ -200,22 +200,13 @@ reboot
 
 ![Reconnectez-vous en tant que 'root'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_1.png)
 
-18. Exécutez les commandes suivantes.
-
-```bash
-host -t A cyber.lan
-host -t A ad.cyber.lan
-host -t SRV _kerberos._udp.cyber.lan
-host -t SRV _ldap._tcp.cyber.lan
-```
-
-19. Redémarrez la machine virtuelle.
+18. Redémarrez la machine virtuelle.
 
 ```bash
 reboot
 ```
 
-20. La configuration de l'active directory est maintenant terminée.
+19. La configuration de l'active directory est maintenant terminée.
 
 ## Installation de SAMBA dans une VM extérieur
 
