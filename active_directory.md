@@ -465,3 +465,27 @@ nano /etc/apache2/apache2.conf
 Vous pourrez ensuite aller à la ligne correspondant au <directory /var/www> pour le configurer comme ci-dessous.
 
 ![Configuration du Fichier apache2.conf](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory_web/apache2.png)
+
+## Configuration des Macs
+### Monter automatiquement les fichiers Samba à la connexion
+
+Afin de monter automatiquement les fichiers Samba, c'est à dire les fichiers partagés à la cyber et les fichiers personnels de l'utilisateur, nous allons créer un script 'login.sh' que vous pouvez placer où vous voulez avec les droits 700 dessus. Aussi, l'owner du fichier doit être root et le groupe admin doit le posséder.
+Il est à noter que $1 correspond au nom d'utilisateur dans ce fichier, c'est le système qui nous l'envoie.
+Exemple de contenu: 
+
+```bash
+#!/usr/bin/env bash
+user=$1
+export user
+echo "touch" >> /Users/"$user"/Desktop/log
+mkdir /Users/"$user"/Desktop/Cyber\ Partage
+mount_smbfs //sambav2@10.10.5.31/sharedFolder /Users/"$user"/Desktop/Cyber\ Partage 
+mkdir /Users/"$user"/Desktop/Fichiers\ de\ "$user"
+mount_smbfs //sambav2@10.10.5.31/"$user" /Users/"$user"/Desktop/Fichiers\ de\ "$user"
+```
+
+Une fois le script édité, il va falloir dire au Mac que lors de la connexion, il doit aller chercher ce fichier et l'éxécuter avec les droits root. Pour ce faire, vous devez taper: 
+
+```bash
+sudo defaults write com.apple.loginwindow LoginHook /path/to/login.sh
+```
