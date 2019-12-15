@@ -165,21 +165,7 @@ nano /etc/resolv.conf
 
 16. Redémarrez la machine virtuelle.
 
-```bash
-reboot
-```
-
-17. Reconnectez-vous en tant que 'root'.
-
-![Reconnectez-vous en tant que 'root'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_active_directory/capture_1.png)
-
-18. Redémarrez la machine virtuelle.
-
-```bash
-reboot
-```
-
-19. La configuration de l'active directory est maintenant terminée.
+17. La configuration de l'active directory est maintenant terminée.
 
 ## Installation de SAMBA dans une VM extérieur
 
