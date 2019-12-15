@@ -6,8 +6,9 @@ Tutoriel réalisé par l'équipe workstation 2019-2020.
 
 1. Serveur Jarvis.
 2. ISO [Proxmox](https://www.proxmox.com/en/downloads).
-3. Clé USB.
-4. [balenaEtcher](https://www.balena.io/etcher).
+3. ISO [Debian](https://www.debian.org/distrib/netinst).
+4. Clé USB.
+5. [balenaEtcher](https://www.balena.io/etcher).
 
 ## Création de la clé USB
 
@@ -75,4 +76,30 @@ Tutoriel réalisé par l'équipe workstation 2019-2020.
 
 12. Par défaut, le nom d'utilisateur est 'root'.
 
-13. Vous pouvez maintenant passer à la configuration de Proxmox et à l'installation de l'active directory.
+13. Connectez-vous à l'adresse du serveur Proxmox et ignorer le message qui s'affiche à l'écran en cliquant sur 'visiter ce site web'.
+
+![Connectez-vous à l'adresse du serveur Proxmox et ignorer le message qui s'affiche à l'écran en cliquant sur 'visiter ce site web'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_proxmox/capture_1.png)
+
+14. Saisissez vos informations de connexion.
+
+Rappel : le nom d'utilisateur est par défaut 'root'.
+
+![Saisissez vos informations de connexion.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_proxmox/capture_2.png)
+
+15. Ignorez le message d'erreur en cliquant sur 'OK'.
+
+![Ignorez le message d'erreur en cliquant sur 'OK'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_proxmox/capture_3.png)
+
+16. Rendez-vous dans la partie (panneau gauche) 'Datacenter' -> 'pve' -> 'local (pve)' et sélectionnez 'Contenu'.
+
+![Rendez-vous dans la partie (panneau gauche) 'Datacenter' -> 'pve' -> 'local (pve)' et sélectionnez 'Contenu'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_proxmox/capture_4.png)
+
+17. Cliquez sur 'Upload' puis choisissez votre ISO Debian et terminez en cliquant sur 'Upload'.
+
+![Cliquez sur 'Upload' puis choisissez votre ISO Debian et terminez en cliquant sur 'Upload'.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_proxmox/capture_5.png)
+
+18. Votre image ISO devrait maintenant appraître comme sur l'image ci-dessous.
+
+![Votre image ISO devrait maintenant appraître comme sur l'image ci-dessous.](https://raw.githubusercontent.com/WarTey/workstation/master/img/config_proxmox/capture_6.png)
+
+19. Vous pouvez maintenant passer à l'installation de l'active directory.
