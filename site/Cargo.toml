@@ -1,0 +1,10 @@
+[package]
+name = "site"
+version = "0.1.0"
+authors = ["Guillaume Blanc de Lanaute <guillaume.blanc-de-lanaute@isen.yncrea.fr>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rocket = "0.4.4"
