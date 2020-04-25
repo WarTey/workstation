@@ -2,7 +2,10 @@
 
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate serde_derive;
+#[macro_use] extern crate diesel;
 
+mod models;
+mod schema;
 mod forms;
 mod database;
 
