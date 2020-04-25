@@ -4,14 +4,13 @@
 #[macro_use] extern crate serde_derive;
 
 mod forms;
+mod database;
 
 use std::collections::HashMap;
 
 use rocket::Request;
 use rocket::response::Redirect;
 use rocket_contrib::templates::Template;
-
-use forms::create_user;
 
 #[derive(Serialize)]
 struct TemplateContext {
@@ -39,7 +38,7 @@ fn not_found(req: &Request<'_>) -> Template {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![index, get, create_user::take_user])
+        .mount("/", routes![index, get, forms::take_user])
         .attach(Template::fairing())
         .register(catchers![not_found])
 }
