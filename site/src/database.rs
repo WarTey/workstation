@@ -3,7 +3,7 @@ use dotenv::dotenv;
 use std::env;
 
 use crate::models::{NewUser, User};
-use crate::schema::users::dsl::{users, firstname, activated};
+use crate::schema::users::dsl::{users, firstname, email, activated};
 
 fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -12,10 +12,11 @@ fn establish_connection() -> PgConnection {
     PgConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
 }
 
-pub fn add_user(first: String, last: String) {
+pub fn add_user(first: String, last: String, mail: String) {
     let new_user = NewUser {
         firstname: &first,
         lastname: &last,
+        email: &mail
     };
 
     let connection = establish_connection();
@@ -32,12 +33,12 @@ pub fn delete_user(first: String) {
         .expect("Error deleting users");
 }
 
-pub fn update_user_activation(first: String, status: bool) {
+pub fn update_user_activation(mail: String, status: bool) {
     let connection = establish_connection();
-    diesel::update(users.filter(firstname.like(first)))
+    diesel::update(users.filter(email.eq(mail)))
         .set(activated.eq(status))
         .get_result::<User>(&connection)
-        .expect("Error updating user");
+        .expect("Error updating user...");
 }
 
 pub fn show_user() -> Vec<User> {
