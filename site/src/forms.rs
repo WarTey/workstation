@@ -1,6 +1,8 @@
 use rocket::response::Redirect;
 use rocket::request::Form;
 
+use crate::database::update_user_activation;
+
 #[derive(FromForm)]
 pub struct TakeUser {
     firstname: String,
@@ -28,4 +30,10 @@ pub fn take_user(form: Form<TakeUser>) -> Result<Redirect, String> {
     }
 
     Ok(Redirect::to("/hello/success"))
+}
+
+#[post("/send_link")]
+pub fn send_link() -> Redirect {
+    update_user_activation(format!("guillaume"), false);
+    Redirect::to("/")
 }

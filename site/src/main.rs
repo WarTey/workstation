@@ -11,8 +11,8 @@ mod database;
 
 use std::collections::HashMap;
 
-use rocket::Request;
 use rocket::response::Redirect;
+use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 
 #[derive(Serialize)]
@@ -33,15 +33,15 @@ fn get(name: String) -> Template {
 }
 
 #[catch(404)]
-fn not_found(req: &Request<'_>) -> Template {
-    let mut map = HashMap::new();
-    map.insert("path", req.uri().path());
-    Template::render("error/404", &map)
+fn not_found() -> Template {
+    let context: HashMap<&str, &str> = HashMap::new();
+    Template::render("url-lost", context)
 }
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![index, get, forms::take_user])
+        .mount("/", routes![index, get, forms::take_user, forms::send_link])
+        .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .register(catchers![not_found])
 }

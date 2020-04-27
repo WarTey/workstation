@@ -32,12 +32,12 @@ pub fn delete_user(first: String) {
         .expect("Error deleting users");
 }
 
-pub fn update_user(id: i32) {
+pub fn update_user_activation(first: String, status: bool) {
     let connection = establish_connection();
-    diesel::update(users.find(id))
-        .set(activated.eq(true))
+    diesel::update(users.filter(firstname.like(first)))
+        .set(activated.eq(status))
         .get_result::<User>(&connection)
-        .expect(&format!("Unable to find user {}", id));
+        .expect("Error updating user");
 }
 
 pub fn show_user() -> Vec<User> {
