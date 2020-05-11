@@ -3,7 +3,7 @@ use dotenv::dotenv;
 use std::env;
 
 use crate::models::{NewUser, User};
-use crate::schema::users::dsl::{users, firstname, email, activated};
+use crate::schema::users::dsl::{users, firstname, email, token, activated};
 
 fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -39,6 +39,20 @@ pub fn update_user_activation(mail: String, status: bool) {
         .set(activated.eq(status))
         .get_result::<User>(&connection)
         .expect("Error updating user...");
+}
+
+pub fn check_link(link: String) -> bool {
+    let connection = establish_connection();
+    let results = users.filter(token.eq(link))
+        .limit(1)
+        .load::<User>(&connection)
+        .expect("Error loading users");
+
+    return if results.len() == 1 && results[0].email.len() > 0 {
+        true
+    } else {
+        false
+    }
 }
 
 pub fn show_user() -> Vec<User> {

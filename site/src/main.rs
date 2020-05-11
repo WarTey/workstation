@@ -15,21 +15,16 @@ use rocket::response::Redirect;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 
-#[derive(Serialize)]
-struct TemplateContext {
-    name: String,
-    items: Vec<&'static str>
-}
+use database::check_link;
 
-#[get("/")]
-fn index() -> Redirect {
-    Redirect::to(uri!(get: name = "Unknown"))
-}
-
-#[get("/hello/<name>")]
-fn get(name: String) -> Template {
-    let context = TemplateContext { name, items: vec!["One", "Two", "Three"] };
-    Template::render("index", &context)
+#[get("/<link>")]
+fn get(link: String) -> Template {
+    let context: HashMap<&str, &str> = HashMap::new();
+    if link.len() == 32 && check_link(format!("{}", link)) {
+        Template::render("index", context)
+    } else {
+        Template::render("url-lost", context)
+    }
 }
 
 #[catch(404)]
@@ -40,7 +35,7 @@ fn not_found() -> Template {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![index, get, forms::take_user, forms::send_link])
+        .mount("/", routes![get, forms::take_user, forms::send_link])
         .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .register(catchers![not_found])

@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="/static/css/style.css">
         {% block style %}{% endblock style %}
     </head>
-    <body style="overflow-y: hidden;">
+    <body>
         <div class="h-100">
             <div id="particles-js"></div>
             <div class="d-flex justify-content-center h-100">
