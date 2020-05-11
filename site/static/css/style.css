@@ -44,7 +44,7 @@ html {
     background-color: red;
 }
 
-.passwordHacked {
+.passwordHacked,.passwordWarning {
     display: none;
 }
 

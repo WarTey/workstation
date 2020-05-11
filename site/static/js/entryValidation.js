@@ -87,8 +87,11 @@ function passwordProgressBar() {
 	}
 
 	$('.passwordHacked').css('display', 'block')
+	$('.passwordWarning').css('display', 'block')
 	
 	$(".passwordHackedTime").text(result.crack_times_display.online_no_throttling_10_per_second);
+	$(".passwordWarning").text(result.feedback.warning);
+	
 	if(result.score == 0) {
 		$('.progress-bar').css('width', 0 +'%').attr('aria-valuenow', 0);
 	} else if(result.score == 1) {

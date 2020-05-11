@@ -24,7 +24,7 @@ struct TemplateContext {
 
 #[derive(Serialize)]
 struct TemplateLogin {
-    url: String
+    email: String
 }
 
 #[get("/")]
@@ -38,9 +38,9 @@ fn get(name: String) -> Template {
     Template::render("index", &context)
 }
 
-#[get("/create/<url>")]
-fn create(url: String) -> Template {
-    let context = TemplateLogin { url };
+#[get("/create/<email>")]
+fn create(email: String) -> Template {
+    let context = TemplateLogin { email };
     Template::render("create", &context)
 }
 
@@ -53,7 +53,7 @@ fn not_found(req: &Request<'_>) -> Template {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![index, get, create, forms::take_user])
+        .mount("/", routes![index, get, create, forms::take_user, forms::create_password])
         .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .register(catchers![not_found])
