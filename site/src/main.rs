@@ -13,12 +13,18 @@ use std::collections::HashMap;
 
 use rocket::Request;
 use rocket::response::Redirect;
+use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 
 #[derive(Serialize)]
 struct TemplateContext {
     name: String,
     items: Vec<&'static str>
+}
+
+#[derive(Serialize)]
+struct TemplateLogin {
+    url: String
 }
 
 #[get("/")]
@@ -32,6 +38,12 @@ fn get(name: String) -> Template {
     Template::render("index", &context)
 }
 
+#[get("/create/<url>")]
+fn create(url: String) -> Template {
+    let context = TemplateLogin { url };
+    Template::render("create", &context)
+}
+
 #[catch(404)]
 fn not_found(req: &Request<'_>) -> Template {
     let mut map = HashMap::new();
@@ -41,7 +53,8 @@ fn not_found(req: &Request<'_>) -> Template {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![index, get, forms::take_user])
+        .mount("/", routes![index, get, create, forms::take_user])
+        .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .register(catchers![not_found])
 }
