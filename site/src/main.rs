@@ -15,13 +15,14 @@ use rocket::response::Redirect;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 
-use database::check_link;
+use database::{check_link, get_email_from_link};
 
 #[get("/<link>")]
 fn get(link: String) -> Template {
-    let context: HashMap<&str, &str> = HashMap::new();
+    let mut context: HashMap<&str, String> = HashMap::new();
     if link.len() == 32 && check_link(format!("{}", link)) {
-        Template::render("index", context)
+        context.insert("email", get_email_from_link(link).unwrap());
+        Template::render("edit", context)
     } else {
         Template::render("url-lost", context)
     }

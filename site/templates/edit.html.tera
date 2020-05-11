@@ -1,0 +1,55 @@
+{% extends "base" %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/css/index.css">
+{% endblock style %}
+
+{% block content %}
+    <div class="user_card fadeInDown" style="height: 450px">
+        <div class="d-flex justify-content-center">
+            <div class="brand_logo_container fadeIn first">
+                <img src="/static/img/logo.png" class="brand_logo" alt="Logo">
+            </div>
+        </div>
+        <div class="d-flex justify-content-center form_container">
+            <form action="/edit" method="post">
+                <div class="input-group mb-3 fadeIn second">
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input type="text" name="username" class="form-control input_user" value="{{ email }}" placeholder="Username" readonly="readonly">
+                </div>
+                <div class="input-group mb-3 fadeIn third">
+                    <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    </div>
+                    <input type="password" name="oldPassword" class="form-control input_pass" id="password_input2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{13,}" placeholder="Old Password">
+                </div>
+                <div class="input-group mb-3 fadeIn fourth">
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    </div>
+                    <input type="password" name="password" class="form-control input_pass" id="password_input" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{13,}" placeholder="Password" data-toggle="popover" data-placement="top" title="Password Strengh" data-html="true" data-trigger="focus" data-content="
+                    <div>
+                        <p id='letter' class='invalid'>A <b>lowercase</b> letter</p>
+                        <p id='capital' class='invalid'>A <b>capital (uppercase)</b> letter</p>
+                        <p id='number' class='invalid'>A <b>number</b></p>
+                        <p id='length' class='invalid'>Minimum <b>13 characters</b></p>
+                    </div>">
+                </div>
+                <div class="input-group mb-5 fadeIn fifth">
+                    <div class="input-group-append">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    </div>
+                    <input type="password" name="confirm-password" class="form-control input_pass" id="password_confirm_input" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Confirm Password" data-toggle="popover" data-placement="top" title="Confirmation Password" data-html="true" data-trigger="focus" data-content="
+                    <div>
+                        <p id='same' class='invalid'><b>Same password</b></p>
+                    </div>">
+                </div>
+                <div class="d-flex justify-content-center mt-3 login_container fadeIn fifth">
+                    <button id="submit_button" type="submit" name="button" class="btn login_btn">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

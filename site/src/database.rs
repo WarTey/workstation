@@ -2,6 +2,8 @@ use diesel::prelude::*;
 use dotenv::dotenv;
 use std::env;
 
+use rocket::response::Redirect;
+
 use crate::models::{NewUser, User};
 use crate::schema::users::dsl::{users, firstname, email, token, activated};
 
@@ -52,6 +54,20 @@ pub fn check_link(link: String) -> bool {
         true
     } else {
         false
+    }
+}
+
+pub fn get_email_from_link(link: String) -> Result<String, Redirect> {
+    let connection = establish_connection();
+    let results = users.filter(token.eq(link))
+        .limit(1)
+        .load::<User>(&connection)
+        .expect("Error loading users");
+
+    if results.len() == 1 && results[0].email.len() > 0 {
+        Ok(format!("{}", results[0].email))
+    } else {
+        Err(Redirect::to("/"))
     }
 }
 
