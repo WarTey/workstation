@@ -4,6 +4,8 @@ use std::env;
 
 use rocket::response::Redirect;
 
+use rand::prelude::*;
+
 use crate::models::{NewUser, User};
 use crate::schema::users::dsl::{users, firstname, email, token, activated};
 
@@ -45,8 +47,12 @@ pub fn show_user() -> Vec<User> {
 
 pub fn update_user_activation(mail: String, status: bool) {
     let connection = establish_connection();
+    let new_token: String = thread_rng()
+        .sample_iter(&rand::distributions::Alphanumeric)
+        .take(32)
+        .collect();
     diesel::update(users.filter(email.eq(mail)))
-        .set(activated.eq(status))
+        .set((activated.eq(status), token.eq(format!("{:x}", md5::compute(new_token)))))
         .execute(&connection)
         .unwrap();
 }
