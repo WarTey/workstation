@@ -12,6 +12,7 @@ mod database;
 use std::collections::HashMap;
 
 use rocket::response::Redirect;
+use rocket::request::FlashMessage;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 
@@ -28,15 +29,27 @@ fn get(link: String) -> Template {
     }
 }
 
-#[catch(404)]
-fn not_found() -> Template {
-    let context: HashMap<&str, &str> = HashMap::new();
+#[get("/incorrect_link")]
+fn incorrect_link(flash: Option<FlashMessage>) -> Template {
+    let mut context: HashMap<&str, (String, String)> = HashMap::new();
+    if flash.is_some() {
+        context.insert("flash", flash.map(|flash| {
+            let name = flash.name().to_string();
+            let message = flash.msg().to_string();
+            (name, message)
+        }).unwrap());
+    }
     Template::render("url-lost", context)
+}
+
+#[catch(404)]
+fn not_found() -> Redirect {
+    Redirect::to(uri!(incorrect_link))
 }
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![get, forms::take_user, forms::send_link])
+        .mount("/", routes![get, incorrect_link, forms::take_user, forms::send_link])
         .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .register(catchers![not_found])

@@ -1,7 +1,7 @@
-use rocket::response::Redirect;
+use rocket::response::{Redirect, Flash};
 use rocket::request::Form;
 
-use crate::database::update_user_activation;
+use crate::database::{update_user_activation, check_email};
 
 #[derive(FromForm)]
 pub struct TakeUser {
@@ -12,7 +12,7 @@ pub struct TakeUser {
     repassword: String
 }
 
-#[derive(FromForm)]
+#[derive(FromForm, Debug)]
 pub struct ResetUser {
     email: String
 }
@@ -43,11 +43,11 @@ pub fn take_user(form: Form<TakeUser>) -> Result<Redirect, String> {
 }
 
 #[post("/send_link", data = "<form>")]
-pub fn send_link(form: Form<ResetUser>) -> Result<Redirect, String> {
-    if form.email.len() > 100 {
-        return Err(format!("Error length form.email!"));
+pub fn send_link(form: Form<ResetUser>) -> Flash<Redirect> {
+    if form.email.len() > 100 || !check_email(format!("{}", form.email)) {
+        Flash::error(Redirect::to(uri!(super::incorrect_link)), "Invalid email.")
+    } else {
+        update_user_activation(format!("{}", form.email), false);
+        Flash::success(Redirect::to(uri!(super::incorrect_link)), "Link sent.")
     }
-
-    update_user_activation(format!("{}", form.email), false);
-    Ok(Redirect::to("/"))
 }

@@ -7,6 +7,8 @@
 
         <link rel="stylesheet" href="/static/css/bootstrap.min.css">
         <link rel="stylesheet" href="/static/css/style.css">
+        <link rel="stylesheet" href="/static/lib/noty.css">
+        <link rel="stylesheet" href="/static/lib/themes/bootstrap-v4.css">
         {% block style %}{% endblock style %}
     </head>
     <body>
@@ -21,5 +23,7 @@
         <script src="/static/js/particles-settings.js"></script>
         <script src="/static/js/bootstrap.min.js"></script>
         <script src="/static/js/fontawesome.min.js"></script>
+        <script src="/static/lib/noty.min.js"></script>
+        {% block script %}{% endblock script %}
     </body>
 </html>

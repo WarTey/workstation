@@ -35,12 +35,29 @@ pub fn delete_user(first: String) {
         .expect("Error deleting users");
 }
 
+pub fn show_user() -> Vec<User> {
+    let connection = establish_connection();
+    users.filter(activated.eq(true))
+        .limit(5)
+        .load::<User>(&connection)
+        .expect("Error loading users")
+}
+
 pub fn update_user_activation(mail: String, status: bool) {
     let connection = establish_connection();
     diesel::update(users.filter(email.eq(mail)))
         .set(activated.eq(status))
-        .get_result::<User>(&connection)
-        .expect("Error updating user...");
+        .execute(&connection)
+        .unwrap();
+}
+
+pub fn check_email(mail: String) -> bool {
+    let connection = establish_connection();
+    return users.filter(email.eq(mail))
+        .limit(1)
+        .load::<User>(&connection)
+        .unwrap()
+        .len() == 1
 }
 
 pub fn check_link(link: String) -> bool {
@@ -69,12 +86,4 @@ pub fn get_email_from_link(link: String) -> Result<String, Redirect> {
     } else {
         Err(Redirect::to("/"))
     }
-}
-
-pub fn show_user() -> Vec<User> {
-    let connection = establish_connection();
-    users.filter(activated.eq(true))
-        .limit(5)
-        .load::<User>(&connection)
-        .expect("Error loading users")
 }
