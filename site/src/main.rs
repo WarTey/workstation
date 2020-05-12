@@ -19,13 +19,13 @@ use rocket_contrib::templates::Template;
 use database::{check_link, get_email_from_link};
 
 #[get("/<link>")]
-fn get(link: String) -> Template {
+fn get(link: String) -> Result<Template, Redirect> {
     let mut context: HashMap<&str, String> = HashMap::new();
     if link.len() == 32 && check_link(format!("{}", link)) {
         context.insert("email", get_email_from_link(link).unwrap());
-        Template::render("edit", context)
+        Ok(Template::render("edit", context))
     } else {
-        Template::render("url-lost", context)
+        Err(Redirect::to(uri!(incorrect_link)))
     }
 }
 
