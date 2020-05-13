@@ -1,10 +1,7 @@
 use diesel::prelude::*;
+use rand::prelude::*;
 use dotenv::dotenv;
 use std::env;
-
-use rocket::response::Redirect;
-
-use rand::prelude::*;
 
 use crate::models::{NewUser, User};
 use crate::schema::users::dsl::{users, firstname, email, token, activated};
@@ -47,7 +44,7 @@ pub fn show_user() -> Vec<User> {
 
 pub fn update_user_activation(mail: String, status: bool) {
     let connection = establish_connection();
-    let new_token: String = thread_rng()
+    let new_token: String = rand::thread_rng()
         .sample_iter(&rand::distributions::Alphanumeric)
         .take(32)
         .collect();
@@ -68,28 +65,18 @@ pub fn check_email(mail: String) -> bool {
 
 pub fn check_link(link: String) -> bool {
     let connection = establish_connection();
-    let results = users.filter(token.eq(link))
+    return users.filter(token.eq(link))
         .limit(1)
         .load::<User>(&connection)
-        .expect("Error loading users");
-
-    return if results.len() == 1 && results[0].email.len() > 0 {
-        true
-    } else {
-        false
-    }
+        .unwrap()
+        .len() == 1
 }
 
-pub fn get_email_from_link(link: String) -> Result<String, Redirect> {
+pub fn get_email_from_link(link: String) -> String {
     let connection = establish_connection();
-    let results = users.filter(token.eq(link))
+    return format!("{}", users.filter(token.eq(link))
         .limit(1)
         .load::<User>(&connection)
-        .expect("Error loading users");
-
-    if results.len() == 1 && results[0].email.len() > 0 {
-        Ok(format!("{}", results[0].email))
-    } else {
-        Err(Redirect::to("/"))
-    }
+        .unwrap()[0]
+        .email)
 }

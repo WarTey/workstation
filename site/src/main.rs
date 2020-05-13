@@ -22,7 +22,7 @@ use database::{check_link, get_email_from_link};
 fn get(link: String) -> Result<Template, Redirect> {
     let mut context: HashMap<&str, String> = HashMap::new();
     if link.len() == 32 && check_link(format!("{}", link)) {
-        context.insert("email", get_email_from_link(link).unwrap());
+        context.insert("email", get_email_from_link(link));
         Ok(Template::render("edit", context))
     } else {
         Err(Redirect::to(uri!(incorrect_link)))
@@ -49,7 +49,7 @@ fn not_found() -> Redirect {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![get, incorrect_link, forms::take_user, forms::send_link])
+        .mount("/", routes![get, incorrect_link, forms::edit_user, forms::send_link])
         .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .register(catchers![not_found])

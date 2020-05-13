@@ -12,9 +12,17 @@ pub struct TakeUser {
     repassword: String
 }
 
-#[derive(FromForm, Debug)]
+#[derive(FromForm)]
 pub struct ResetUser {
     email: String
+}
+
+#[derive(FromForm)]
+pub struct EditUser {
+    email: String,
+    old_password: String,
+    password: String,
+    repassword: String
 }
 
 #[post("/take_user", data = "<form>")]
@@ -49,5 +57,15 @@ pub fn send_link(form: Form<ResetUser>) -> Flash<Redirect> {
     } else {
         update_user_activation(format!("{}", form.email), false);
         Flash::success(Redirect::to(uri!(super::incorrect_link)), "Link sent.")
+    }
+}
+
+#[post("/edit_user", data = "<form>")]
+pub fn edit_user(form: Form<EditUser>) -> Flash<Redirect> {
+    if form.email.len() > 100 || form.old_password.len() < 13 || form.password.len() < 13 || form.repassword != form.password || !check_email(format!("{}", form.email)) {
+        Flash::error(Redirect::to(uri!(super::incorrect_link)), "Invalid form.")
+    } else {
+        //update_user_activation(format!("{}", form.email), false);
+        Flash::success(Redirect::to(uri!(super::incorrect_link)), "Password updated.")
     }
 }
