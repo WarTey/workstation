@@ -6,6 +6,10 @@ Tutoriel réalisé par l'équipe workstation 2019-2020.
 
 Voir [proxmox.md](https://github.com/WarTey/workstation/blob/master/proxmox.md).
 
+## Installation de Rust
+
+Voir [rust.md](https://github.com/WarTey/workstation/blob/master/rust.md).
+
 ## Installation de l'active directory
 
 ### Pour une installation depuis le début : 
