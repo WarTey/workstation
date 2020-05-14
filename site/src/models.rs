@@ -6,8 +6,11 @@ pub struct User {
     pub firstname: String,
     pub lastname: String,
     pub email: String,
+    pub pass_strength: String,
+    pub crack_time: String,
     pub token: String,
     pub activated: bool,
+    pub super_user: bool,
 }
 
 #[derive(Insertable)]

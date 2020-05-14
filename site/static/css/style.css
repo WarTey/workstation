@@ -35,6 +35,10 @@ html {
     border-radius: 10px;
 }
 
+.progress, #password-strength, #password-hacked {
+    display: none;
+}
+
 .brand_logo_container {
     position: absolute;
     height: 170px;

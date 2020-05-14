@@ -38,6 +38,11 @@
                         <p id='length' class='invalid'>Minimum <b>13 characters</b></p>
                     </div>" required>
                 </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="text-center" id="password-strength"></p>
+                <p class="text-center" id="password-hacked">Time required to be hacked : <br><strong id="password-time"></strong></p>
                 <div class="input-group mb-5 fadeIn fifth">
                     <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>

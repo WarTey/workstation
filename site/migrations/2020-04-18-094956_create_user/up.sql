@@ -3,6 +3,9 @@ CREATE TABLE users (
   firstname VARCHAR(50) NOT NULL,
   lastname VARCHAR(50) NOT NULL,
   email VARCHAR(100) NOT NULL,
+  pass_strength VARCHAR(50) NOT NULL,
+  crack_time VARCHAR(50) NOT NULL,
   token VARCHAR(32) NOT NULL DEFAULT md5(random()::text),
-  activated BOOLEAN NOT NULL DEFAULT FALSE
+  activated BOOLEAN NOT NULL DEFAULT FALSE,
+  super_user BOOLEAN NOT NULL DEFAULT FALSE
 )

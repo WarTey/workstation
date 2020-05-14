@@ -25,6 +25,7 @@
         <script src="/static/js/bootstrap.min.js"></script>
         <script src="/static/js/fontawesome.min.js"></script>
         <script src="/static/lib/noty.min.js"></script>
+        <script src="/static/js/zxcvbn.js"></script>
         <script>
             $(document).ready(function() {
                 {% if flash and flash.0 == "success" %}
