@@ -48,74 +48,40 @@ function passwordProgressBar() {
 
 $("#password").on("click input", function() {
     setTimeout(function() {
-        var myInput = document.getElementById("password");
-        var letter = document.getElementById("letter");
-        var capital = document.getElementById("capital");
-        var number = document.getElementById("number");
-        var length = document.getElementById("length");
-        var special = document.getElementById("special");
+        if ($("#password").val().match(/[a-z]/g))
+            $("#letter").removeClass("invalid").addClass("valid");
+        else
+            $("#letter").removeClass("valid").addClass("invalid");
+
+        if ($("#password").val().match(/[A-Z]/g))
+            $("#capital").removeClass("invalid").addClass("valid");
+        else
+            $("#capital").removeClass("valid").addClass("invalid");
+
+        if ($("#password").val().match(/[0-9]/g))
+            $("#number").removeClass("invalid").addClass("valid");
+        else
+            $("#number").removeClass("valid").addClass("invalid");
+
+        if ($("#password").val().length >= 13)
+            $("#length").removeClass("invalid").addClass("valid");
+        else
+            $("#length").removeClass("valid").addClass("invalid");
+
+        if ($("#password").val().match(/\W|_/g))
+            $("#special").removeClass("invalid").addClass("valid");
+        else
+            $("#special").removeClass("valid").addClass("invalid");
 
         passwordProgressBar();
-
-        var lowerCaseLetters = /[a-z]/g;
-        if (myInput.value.match(lowerCaseLetters)) {  
-            letter.classList.remove("invalid");
-            letter.classList.add("valid");
-        } else {
-            letter.classList.remove("valid");
-            letter.classList.add("invalid");
-        }
-
-        var upperCaseLetters = /[A-Z]/g;
-        if (myInput.value.match(upperCaseLetters)) {
-            capital.classList.remove("invalid");
-            capital.classList.add("valid");
-        } else {
-            capital.classList.remove("valid");
-            capital.classList.add("invalid");
-        }
-
-        var numbers = /[0-9]/g;
-        if (myInput.value.match(numbers)) {
-            number.classList.remove("invalid");
-            number.classList.add("valid");
-        } else {
-            number.classList.remove("valid");
-            number.classList.add("invalid");
-        }
-
-        if (myInput.value.length >= 13) {
-            length.classList.remove("invalid");
-            length.classList.add("valid");
-        } else {
-            length.classList.remove("valid");
-            length.classList.add("invalid");
-        }
-
-        var specialCharacters = /\W|_/g;
-        if (myInput.value.match(specialCharacters)) {
-            special.classList.remove("invalid");
-            special.classList.add("valid");
-        } else {
-            special.classList.remove("valid");
-            special.classList.add("invalid");
-        }
     }, 200);
 });
 
 $("#repassword").on("click input", function() {
     setTimeout(function() {
-        var myInput = document.getElementById("repassword");
-        var initialPassword = document.getElementById("password");
-        var same = document.getElementById("same");
-        var result = myInput.value.localeCompare(initialPassword.value);
-
-        if (!result) {
-            same.classList.remove("invalid");
-            same.classList.add("valid");
-        } else {
-            same.classList.remove("valid");
-            same.classList.add("invalid");
-        }
+        if ($("#password").val() == $("#repassword").val())
+            $("#same").removeClass("invalid").addClass("valid");
+        else
+            $("#same").removeClass("valid").addClass("invalid");
     }, 200);
 });
