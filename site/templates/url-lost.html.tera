@@ -32,25 +32,3 @@
         </div>
     </div>
 {% endblock content %}
-
-{% block script %}
-    <script>
-        $(document).ready(function() {
-            {% if flash and flash.0 == "success" %}
-                new Noty({
-                    theme: 'bootstrap-v4',
-                    type: 'success',
-                    timeout: 3500,
-                    text: '{{ flash.1 }}',
-                }).show();
-            {% elif flash and flash.0 == "error" %}
-                new Noty({
-                    theme: 'bootstrap-v4',
-                    type: 'error',
-                    timeout: 3500,
-                    text: '{{ flash.1 }}',
-                }).show();
-            {% endif %}
-        });
-    </script>
-{% endblock script %}

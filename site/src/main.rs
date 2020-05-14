@@ -1,8 +1,8 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 #[macro_use] extern crate rocket;
-#[macro_use] extern crate serde_derive;
 #[macro_use] extern crate diesel;
+#[macro_use] extern crate serde_derive;
 
 mod models;
 mod schema;
@@ -18,11 +18,24 @@ use rocket_contrib::templates::Template;
 
 use database::{check_link, get_email_from_link};
 
+#[derive(Serialize)]
+struct TemplateContext {
+    email: String,
+    flash: Option<(String, String)>
+}
+
 #[get("/<link>")]
-fn get(link: String) -> Result<Template, Redirect> {
-    let mut context: HashMap<&str, String> = HashMap::new();
+fn get(link: String, flash: Option<FlashMessage>) -> Result<Template, Redirect> {
     if link.len() == 32 && check_link(format!("{}", link)) {
-        context.insert("email", get_email_from_link(link));
+        let context = if flash.is_some() {
+            TemplateContext { email: get_email_from_link(link), flash: flash.map(|flash| {
+                let name = flash.name().to_string();
+                let message = flash.msg().to_string();
+                (name, message)
+            }) }
+        } else {
+            TemplateContext { email: get_email_from_link(link), flash: None }
+        };
         Ok(Template::render("edit", context))
     } else {
         Err(Redirect::to(uri!(incorrect_link)))

@@ -1,7 +1,8 @@
 use rocket::response::{Redirect, Flash};
 use rocket::request::Form;
+use regex::Regex;
 
-use crate::database::{update_user_activation, check_email};
+use crate::database::{update_user_activation, check_email, get_link_from_email};
 
 #[derive(FromForm)]
 pub struct TakeUser {
@@ -60,12 +61,19 @@ pub fn send_link(form: Form<ResetUser>) -> Flash<Redirect> {
     }
 }
 
+fn regex_password(password: String) -> bool {
+    let regex_letter = Regex::new(r"[a-z]").unwrap();
+    let regex_capital = Regex::new(r"[A-Z]").unwrap();
+    let regex_number = Regex::new(r"\d").unwrap();
+    let regex_special = Regex::new(r"\W|_").unwrap();
+    regex_letter.is_match(&password) && regex_capital.is_match(&password) && regex_number.is_match(&password) && regex_special.is_match(&password)
+}
+
 #[post("/edit_user", data = "<form>")]
 pub fn edit_user(form: Form<EditUser>) -> Flash<Redirect> {
-    if form.email.len() > 100 || form.old_password.len() < 13 || form.password.len() < 13 || form.repassword != form.password || !check_email(format!("{}", form.email)) {
-        Flash::error(Redirect::to(uri!(super::incorrect_link)), "Invalid form.")
+    if form.email.len() > 100 || form.old_password.len() < 13 || form.password.len() < 13 || !regex_password(format!("{}", form.password)) || form.repassword != form.password || !check_email(format!("{}", form.email)) {
+        Flash::error(Redirect::to(uri!(super::get: get_link_from_email(format!("{}", form.email)))), "Invalid form.")
     } else {
-        //update_user_activation(format!("{}", form.email), false);
-        Flash::success(Redirect::to(uri!(super::incorrect_link)), "Password updated.")
+        Flash::success(Redirect::to(uri!(super::get: get_link_from_email(format!("{}", form.email)))), "Password updated.")
     }
 }

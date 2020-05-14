@@ -56,7 +56,7 @@ pub fn update_user_activation(mail: String, status: bool) {
 
 pub fn check_email(mail: String) -> bool {
     let connection = establish_connection();
-    return users.filter(email.eq(mail))
+    users.filter(email.eq(mail))
         .limit(1)
         .load::<User>(&connection)
         .unwrap()
@@ -65,7 +65,7 @@ pub fn check_email(mail: String) -> bool {
 
 pub fn check_link(link: String) -> bool {
     let connection = establish_connection();
-    return users.filter(token.eq(link))
+    users.filter(token.eq(link))
         .limit(1)
         .load::<User>(&connection)
         .unwrap()
@@ -74,9 +74,18 @@ pub fn check_link(link: String) -> bool {
 
 pub fn get_email_from_link(link: String) -> String {
     let connection = establish_connection();
-    return format!("{}", users.filter(token.eq(link))
+    format!("{}", users.filter(token.eq(link))
         .limit(1)
         .load::<User>(&connection)
         .unwrap()[0]
         .email)
+}
+
+pub fn get_link_from_email(mail: String) -> String {
+    let connection = establish_connection();
+    format!("{}", users.filter(email.eq(mail))
+        .limit(1)
+        .load::<User>(&connection)
+        .unwrap()[0]
+        .token)
 }
