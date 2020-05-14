@@ -2,9 +2,10 @@ use diesel::prelude::*;
 use rand::prelude::*;
 use dotenv::dotenv;
 use std::env;
+use zxcvbn;
 
 use crate::models::{NewUser, User};
-use crate::schema::users::dsl::{users, firstname, email, token, activated};
+use crate::schema::users::dsl::{users, firstname, email, token, activated, pass_strength, crack_time};
 
 fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -88,4 +89,13 @@ pub fn get_link_from_email(mail: String) -> String {
         .load::<User>(&connection)
         .unwrap()[0]
         .token)
+}
+
+pub fn update_user_password(mail: String, password: String) {
+    let connection = establish_connection();
+    let estimate = zxcvbn::zxcvbn(&password, &[]).unwrap();
+    diesel::update(users.filter(email.eq(mail)))
+        .set((pass_strength.eq(format!("{}", estimate.score())), crack_time.eq(format!("{}", estimate.crack_times().online_no_throttling_10_per_second()))))
+        .execute(&connection)
+        .unwrap();
 }
