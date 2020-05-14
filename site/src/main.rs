@@ -3,7 +3,6 @@
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate diesel;
 #[macro_use] extern crate serde_derive;
-#[macro_use] extern crate serde_json;
 
 mod models;
 mod schema;
@@ -16,7 +15,7 @@ use rocket::response::Redirect;
 use rocket::request::FlashMessage;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
-use rocket_contrib::json::{Json, JsonValue};
+use rocket_contrib::json::Json;
 
 use database::{check_link, get_email_from_link, get_users};
 
