@@ -1,4 +1,4 @@
-# Installation de Rust
+# Installation de Rust et des dépendances utilisées
 
 Tutoriel réalisé par l'équipe workstation 2019-2020.
 
@@ -246,6 +246,52 @@ Tutoriel réalisé par l'équipe workstation 2019-2020.
 
    
 
-   ![cargo compilation et exécution](https://raw.githubusercontent.com/WarTey/workstation/master/img/install-rust/capture_10.png)
+   ![cargo compilation et exécution](https://raw.githubusercontent.com/WarTey/workstation/master/img/install-rust/capture_11.png)
 
    
+
+## <a name="install_rocket">Installation de Rocket</a>
+
+​	*Rocket* est framework web pour *Rust*
+
+1. Pour installer *Rocket* positionnez-vous dans le dossier `hello_world`.
+
+   ```bash
+   cd hello_world
+   ```
+
+2. Ensuite, ajoutez la ligne suivante à votre fichier Cargo.toml. 
+
+   ```
+   [dependencies]
+   rocket = "0.4.4"
+   ```
+
+   ![cargo compilation et exécution](https://raw.githubusercontent.com/WarTey/workstation/master/img/install-rust/capture_12.png)
+
+
+
+## <a name="install_tera">Installation de Tera</a>
+
+​	*Tera* est un moteur de template pour *Rust*.
+
+​	
+
+1. Afin de l'installer, il vous suffit d'aller dans votre répertoire `hello_world`.
+
+   ```bash
+   cd hello_world
+   ```
+   
+   
+   
+2. Puis d'ajouter la ligne suivante à votre `Cargo.toml` :
+
+   ```rust
+   [dependencies.rocket_contrib]
+   version = "0.4.4"
+   default-features = false
+   features = ["tera_templates"]
+   ```
+
+   ![cargo compilation et exécution](https://raw.githubusercontent.com/WarTey/workstation/master/img/install-rust/capture_13.png)
