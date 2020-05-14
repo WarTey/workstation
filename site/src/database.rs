@@ -99,3 +99,9 @@ pub fn update_user_password(mail: String, password: String) {
         .execute(&connection)
         .unwrap();
 }
+
+pub fn get_users() -> Vec<User> {
+    let connection = establish_connection();
+    users.load::<User>(&connection)
+        .unwrap()
+}
