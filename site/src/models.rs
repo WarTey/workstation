@@ -19,4 +19,6 @@ pub struct NewUser<'a> {
     pub firstname: &'a str,
     pub lastname: &'a str,
     pub email: &'a str,
+    pub pass_strength: String,
+    pub crack_time: String,
 }

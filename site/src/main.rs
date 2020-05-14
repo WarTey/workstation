@@ -17,12 +17,13 @@ use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 use rocket_contrib::json::Json;
 
-use database::{check_link, get_email_from_link, get_users};
+use database::{check_link, get_email_from_link, get_users, check_status};
 
 #[derive(Serialize)]
 struct TemplateContext {
     email: String,
-    flash: Option<(String, String)>
+    flash: Option<(String, String)>,
+    activated: bool
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -45,9 +46,23 @@ fn statistics() -> Option<Json<Vec<UsersStatistics>>> {
     Some(Json(statistics))
 }
 
+#[get("/create")]
+fn create(flash: Option<FlashMessage>) -> Template {
+    let mut context: HashMap<&str, (String, String)> = HashMap::new();
+    if flash.is_some() {
+        context.insert("flash", flash.map(|flash| {
+            let name = flash.name().to_string();
+            let message = flash.msg().to_string();
+            (name, message)
+        }).unwrap());
+    }
+    Template::render("create", context)
+}
+
 #[get("/<link>")]
 fn get(link: String, flash: Option<FlashMessage>) -> Result<Template, Redirect> {
     if link.len() == 32 && check_link(format!("{}", link)) {
+        let token = link.clone();
         let context = if flash.is_some() {
             TemplateContext {
                 email: get_email_from_link(link),
@@ -55,12 +70,14 @@ fn get(link: String, flash: Option<FlashMessage>) -> Result<Template, Redirect> 
                     let name = flash.name().to_string();
                     let message = flash.msg().to_string();
                     (name, message)
-                })
+                }),
+                activated: check_status(token)
             }
         } else {
             TemplateContext {
                 email: get_email_from_link(link),
-                flash: None
+                flash: None,
+                activated: check_status(token)
             }
         };
         Ok(Template::render("edit", context))
@@ -89,7 +106,7 @@ fn not_found() -> Redirect {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![statistics, get, incorrect_link, forms::edit_user, forms::send_link])
+        .mount("/", routes![statistics, create, get, incorrect_link, forms::create_user, forms::edit_user, forms::send_link])
         .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .register(catchers![not_found])

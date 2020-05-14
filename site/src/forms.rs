@@ -2,7 +2,7 @@ use rocket::response::{Redirect, Flash};
 use rocket::request::Form;
 use regex::Regex;
 
-use crate::database::{update_user_activation, check_email, get_link_from_email, update_user_password};
+use crate::database::{add_user, update_user_link, check_email, get_link_from_email, update_user_password};
 
 #[derive(FromForm)]
 pub struct TakeUser {
@@ -24,6 +24,13 @@ pub struct EditUser {
     old_password: String,
     password: String,
     repassword: String
+}
+
+#[derive(FromForm)]
+pub struct CreateUser {
+    email: String,
+    firstname: String,
+    lastname: String
 }
 
 #[post("/take_user", data = "<form>")]
@@ -56,7 +63,7 @@ pub fn send_link(form: Form<ResetUser>) -> Flash<Redirect> {
     if form.email.len() > 100 || !check_email(format!("{}", form.email)) {
         Flash::error(Redirect::to(uri!(super::incorrect_link)), "Invalid email.")
     } else {
-        update_user_activation(format!("{}", form.email), false);
+        update_user_link(format!("{}", form.email), false);
         Flash::success(Redirect::to(uri!(super::incorrect_link)), "Link sent.")
     }
 }
@@ -76,5 +83,17 @@ pub fn edit_user(form: Form<EditUser>) -> Flash<Redirect> {
     } else {
         update_user_password(format!("{}", form.email), format!("{}", form.password));
         Flash::success(Redirect::to(uri!(super::get: get_link_from_email(format!("{}", form.email)))), "Password updated.")
+    }
+}
+
+#[post("/create_user", data = "<form>")]
+pub fn create_user(form: Form<CreateUser>) -> Flash<Redirect> {
+    let regex_email = Regex::new(r"^\S+@\S+[.]+\S+$").unwrap();
+    let regex_name = Regex::new(r"^\S*$").unwrap();
+    if form.email.len() > 100 || form.firstname.len() > 50 || form.lastname.len() > 50 || !regex_email.is_match(&form.email) || !regex_name.is_match(&form.firstname) || !regex_name.is_match(&form.lastname) {
+        Flash::error(Redirect::to(uri!(super::create)), "Invalid form.")
+    } else {
+        add_user(format!("{}", form.firstname), format!("{}", form.lastname), format!("{}", form.email));
+        Flash::success(Redirect::to(uri!(super::create)), "Request sent.")
     }
 }

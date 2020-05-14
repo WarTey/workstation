@@ -23,7 +23,7 @@
                     <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                     </div>
-                    <input type="password" name="old_password" class="form-control input_pass" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W|_).{13,}" placeholder="Old Password" required>
+                    <input type="password" name="old_password" class="form-control input_pass" placeholder="Old Password" required>
                 </div>
                 <div class="input-group mb-3 fadeIn fourth">
                     <div class="input-group-append">
