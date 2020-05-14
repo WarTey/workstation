@@ -120,7 +120,7 @@ Tutoriel réalisé par l'équipe workstation 2019-2020.
 
    
 
-6. Créez exécutable *Rust*.
+6. Créez l'exécutable *Rust*.
 
    ```bash
    rustc rusttest.rs
@@ -134,7 +134,7 @@ Tutoriel réalisé par l'équipe workstation 2019-2020.
 
    
 
-8. Lancer exécutable grâce à la commande suivante :
+8. Lancer l'exécutable grâce à la commande suivante :
 
    ```bash
    ./rusttest
