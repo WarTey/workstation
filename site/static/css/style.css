@@ -173,6 +173,12 @@ html {
     animation-delay: 1.2s;
 }
 
+.fadeIn.sixth {
+    -webkit-animation-delay: 1.4s;
+    -moz-animation-delay: 1.4s;
+    animation-delay: 1.4s;
+}
+
 .valid {
   color: green;
 }

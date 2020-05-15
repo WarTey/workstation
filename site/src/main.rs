@@ -106,7 +106,7 @@ fn not_found() -> Redirect {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![statistics, create, get, incorrect_link, forms::create_user, forms::edit_user, forms::send_link])
+        .mount("/", routes![statistics, create, get, incorrect_link, forms::create_password, forms::create_user, forms::edit_user, forms::send_link])
         .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .register(catchers![not_found])

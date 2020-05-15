@@ -1,7 +1,11 @@
 {% extends "base" %}
 
 {% block style %}
-    <link rel="stylesheet" href="/static/css/edit.css">
+    {% if activated %}
+        <link rel="stylesheet" href="/static/css/edit.css">
+    {% else %}
+        <link rel="stylesheet" href="/static/css/url-lost.css">
+    {% endif %}
 {% endblock style %}
 
 {% block content %}
@@ -17,19 +21,25 @@
                     <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                     </div>
-                    <input type="text" name="email" class="form-control input_user" value="{{ email }}" placeholder="Email" readonly="readonly" required>
+                    <input type="text" name="email" class="form-control input_user" value="{{ email }}" placeholder="Email" readonly="readonly" pattern="^\S{2,68}@\S{2,15}[.]\S{2,15}$" required>
                 </div>
-                <div class="input-group mb-3 fadeIn third">
-                    <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                {% if activated %}
+                    <div class="input-group mb-3 fadeIn third">
+                        <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" name="old_password" class="form-control input_pass" placeholder="Old Password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W|_).{13,100}$" required>
                     </div>
-                    <input type="password" name="old_password" class="form-control input_pass" placeholder="Old Password" required>
-                </div>
-                <div class="input-group mb-3 fadeIn fourth">
+                {% endif %}
+                {% if activated %}
+                    <div class="input-group mb-3 fadeIn fourth">
+                {% else %}
+                    <div class="input-group mb-3 fadeIn third">
+                {% endif %}
                     <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
                     </div>
-                    <input type="password" name="password" id="password" class="form-control input_pass" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W|_).{13,}" placeholder="Password" data-toggle="popover" data-placement="right" title="Password Strengh" data-html="true" data-trigger="focus" data-content="
+                    <input type="password" name="password" id="password" class="form-control input_pass" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W|_).{13,100}$" placeholder="Password" data-toggle="popover" data-placement="right" title="Password Strengh" data-html="true" data-trigger="focus" data-content="
                     <div>
                         <p id='letter' class='invalid'>A <b>lowercase</b> letter</p>
                         <p id='capital' class='invalid'>A <b>capital (uppercase)</b> letter</p>
@@ -43,17 +53,26 @@
                 </div>
                 <p class="text-center" id="password-strength"></p>
                 <p class="text-center" id="password-hacked">Time required to be hacked : <br><strong id="password-time"></strong></p>
-                <div class="input-group mb-5 fadeIn fifth">
+                {% if activated %}
+                    <div class="input-group mb-5 fadeIn fifth">
+                {% else %}
+                    <div class="input-group mb-5 fadeIn fourth">
+                {% endif %}
                     <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-key"></i></span>
                     </div>
-                    <input type="password" name="repassword" id="repassword" class="form-control input_pass" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W|_).{13,}" placeholder="Confirm Password" data-toggle="popover" data-placement="right" title="Confirmation Password" data-html="true" data-trigger="focus" data-content="
+                    <input type="password" name="repassword" id="repassword" class="form-control input_pass" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W|_).{13,100}$" placeholder="Confirm Password" data-toggle="popover" data-placement="right" title="Confirmation Password" data-html="true" data-trigger="focus" data-content="
                     <div>
                         <p id='same' class='invalid'><b>Same password</b></p>
                     </div>" required>
                 </div>
-                <div class="d-flex justify-content-center mt-3 login_container fadeIn fifth">
+                {% if activated %}
+                    <div class="d-flex justify-content-center mt-3 login_container fadeIn sixth">
                     <button id="submit_button" type="submit" class="btn login_btn">Change Password</button>
+                {% else %}
+                    <div class="d-flex justify-content-center mt-3 login_container fadeIn fifth">
+                    <button id="submit_button" type="submit" class="btn login_btn">Create Password</button>
+                {% endif %}
                 </div>
             </form>
         </div>

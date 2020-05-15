@@ -37,14 +37,14 @@ pub fn add_user(first: String, last: String, mail: String) {
         .expect("Error deleting users");
 }*/
 
-pub fn update_user_link(mail: String, status: bool) {
+pub fn update_user_link(mail: String) {
     let connection = establish_connection();
     let new_token: String = rand::thread_rng()
         .sample_iter(&rand::distributions::Alphanumeric)
         .take(32)
         .collect();
     diesel::update(users.filter(email.eq(mail)))
-        .set((activated.eq(status), token.eq(format!("{:x}", md5::compute(new_token)))))
+        .set((activated.eq(false), token.eq(format!("{:x}", md5::compute(new_token)))))
         .execute(&connection)
         .unwrap();
 }
@@ -99,6 +99,15 @@ pub fn update_user_password(mail: String, password: String) {
     let estimate = zxcvbn::zxcvbn(&password, &[]).unwrap();
     diesel::update(users.filter(email.eq(mail)))
         .set((pass_strength.eq(format!("{}", estimate.score())), crack_time.eq(format!("{}", estimate.crack_times().online_no_throttling_10_per_second()))))
+        .execute(&connection)
+        .unwrap();
+}
+
+pub fn create_user_password(mail: String, password: String) {
+    let connection = establish_connection();
+    let estimate = zxcvbn::zxcvbn(&password, &[]).unwrap();
+    diesel::update(users.filter(email.eq(mail)))
+        .set((activated.eq(true), pass_strength.eq(format!("{}", estimate.score())), crack_time.eq(format!("{}", estimate.crack_times().online_no_throttling_10_per_second()))))
         .execute(&connection)
         .unwrap();
 }

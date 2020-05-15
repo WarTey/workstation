@@ -1,7 +1,7 @@
 {% extends "base" %}
 
 {% block style %}
-    <link rel="stylesheet" href="/static/css/create.css">
+    <link rel="stylesheet" href="/static/css/url-lost.css">
 {% endblock style %}
 
 {% block content %}
@@ -17,19 +17,19 @@
                     <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                     </div>
-                    <input type="text" name="email" class="form-control input_user" placeholder="Email" pattern="^\S+@\S+[.]+\S+$" required>
+                    <input type="text" name="email" class="form-control input_user" placeholder="Email" pattern="^\S{2,68}@\S{2,15}[.]\S{2,15}$" required>
                 </div>
-                <div class="input-group mb-3 fadeIn second">
+                <div class="input-group mb-3 fadeIn third">
                     <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                     </div>
-                    <input type="text" name="lastname" class="form-control input_user" placeholder="Lastname" pattern="^\S*$" required>
+                    <input type="text" name="lastname" class="form-control input_user" placeholder="Lastname" pattern="^\S{2,50}$" required>
                 </div>
-                <div class="input-group mb-5 fadeIn second">
+                <div class="input-group mb-5 fadeIn fourth">
                     <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                     </div>
-                    <input type="text" name="firstname" class="form-control input_user" placeholder="Firstname" pattern="^\S*$" required>
+                    <input type="text" name="firstname" class="form-control input_user" placeholder="Firstname" pattern="^\S{2,50}$" required>
                 </div>
                 <div class="d-flex justify-content-center mt-3 login_container fadeIn fifth">
                     <button id="submit_button" type="submit" class="btn login_btn">Create Account</button>

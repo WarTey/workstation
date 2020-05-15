@@ -14,14 +14,20 @@ $(function () {
   	});
 });
 
-function passwordProgressBar() {
+function progressBar() {
 	var result = zxcvbn($("#password").val(), user_inputs = [])
     if(result.score > 0) {
-        $('.user_card').css('height', '575px');
+        if ($('.user_card').css('height') == '510px')
+            $('.user_card').css('height', '575px');
+        else
+            $('.user_card').css('height', '525px');
         $('.progress').css('display', 'flex');
         $('#password-strength').fadeIn();
     } else {
-        $('.user_card').css('height', '510px');
+        if ($('.user_card').css('height') == '450px' || $('.user_card').css('height') == '575px')
+            $('.user_card').css('height', '510px');
+        else
+            $('.user_card').css('height', '460px');
         $('.progress').fadeOut();
         $('#password-strength').fadeOut();
     }
@@ -73,7 +79,7 @@ $("#password").on("click input", function() {
         else
             $("#special").removeClass("valid").addClass("invalid");
 
-        passwordProgressBar();
+        progressBar();
     }, 200);
 });
 
