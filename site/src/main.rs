@@ -61,7 +61,7 @@ fn create(flash: Option<FlashMessage>) -> Template {
 
 #[get("/<link>")]
 fn get(link: String, flash: Option<FlashMessage>) -> Result<Template, Redirect> {
-    if link.len() == 32 && check_link(format!("{}", link)) {
+    if link.len() == 32 && check_link(link.to_string()) {
         let token = link.clone();
         let context = if flash.is_some() {
             TemplateContext {

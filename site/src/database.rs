@@ -2,7 +2,6 @@ use diesel::prelude::*;
 use rand::prelude::*;
 use dotenv::dotenv;
 use std::env;
-use zxcvbn;
 
 use crate::models::{NewUser, User};
 use crate::schema::users::dsl::{users, email, token, activated, pass_strength, crack_time};
@@ -11,7 +10,7 @@ fn establish_connection() -> PgConnection {
     dotenv().ok();
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    PgConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
+    PgConnection::establish(&database_url).unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
 pub fn add_user(first: String, last: String, mail: String) {
@@ -78,20 +77,20 @@ pub fn check_link(link: String) -> bool {
 
 pub fn get_email_from_link(link: String) -> String {
     let connection = establish_connection();
-    format!("{}", users.filter(token.eq(link))
+    users.filter(token.eq(link))
         .limit(1)
         .load::<User>(&connection)
         .unwrap()[0]
-        .email)
+        .email.to_string()
 }
 
 pub fn get_link_from_email(mail: String) -> String {
     let connection = establish_connection();
-    format!("{}", users.filter(email.eq(mail))
+    users.filter(email.eq(mail))
         .limit(1)
         .load::<User>(&connection)
         .unwrap()[0]
-        .token)
+        .token.to_string()
 }
 
 pub fn update_user_password(mail: String, password: String) {

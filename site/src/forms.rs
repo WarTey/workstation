@@ -50,40 +50,40 @@ fn regex_name(name: String) -> bool {
 
 #[post("/send_link", data = "<form>")]
 pub fn send_link(form: Form<ResetUser>) -> Flash<Redirect> {
-    if !regex_email(format!("{}", form.email)) || !check_email(format!("{}", form.email)) {
+    if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) {
         Flash::error(Redirect::to(uri!(super::incorrect_link)), "Invalid email.")
     } else {
-        update_user_link(format!("{}", form.email));
+        update_user_link(form.email.to_string());
         Flash::success(Redirect::to(uri!(super::incorrect_link)), "Link sent.")
     }
 }
 
 #[post("/edit_user", data = "<form>")]
 pub fn edit_user(form: Form<EditUser>) -> Flash<Redirect> {
-    if !regex_email(format!("{}", form.email)) || !regex_password(format!("{}", form.old_password)) || !regex_password(format!("{}", form.password)) || form.repassword != form.password || !check_email(format!("{}", form.email)) {
-        Flash::error(Redirect::to(uri!(super::get: get_link_from_email(format!("{}", form.email)))), "Invalid form.")
+    if !regex_email(form.email.to_string()) || !regex_password(form.old_password.to_string()) || !regex_password(form.password.to_string()) || form.repassword != form.password || !check_email(form.email.to_string()) {
+        Flash::error(Redirect::to(uri!(super::get: get_link_from_email(form.email.to_string()))), "Invalid form.")
     } else {
-        update_user_password(format!("{}", form.email), format!("{}", form.password));
-        Flash::success(Redirect::to(uri!(super::get: get_link_from_email(format!("{}", form.email)))), "Password updated.")
+        update_user_password(form.email.to_string(), form.password.to_string());
+        Flash::success(Redirect::to(uri!(super::get: get_link_from_email(form.email.to_string()))), "Password updated.")
     }
 }
 
 #[post("/create_user", data = "<form>")]
 pub fn create_user(form: Form<CreateUser>) -> Flash<Redirect> {
-    if !regex_email(format!("{}", form.email)) || check_email(format!("{}", form.email)) || !regex_name(format!("{}", form.firstname)) || !regex_name(format!("{}", form.lastname)) {
+    if !regex_email(form.email.to_string()) || check_email(form.email.to_string()) || !regex_name(form.firstname.to_string()) || !regex_name(form.lastname.to_string()) {
         Flash::error(Redirect::to(uri!(super::create)), "Invalid form.")
     } else {
-        add_user(format!("{}", form.firstname), format!("{}", form.lastname), format!("{}", form.email));
+        add_user(form.firstname.to_string(), form.lastname.to_string(), form.email.to_string());
         Flash::success(Redirect::to(uri!(super::create)), "Request sent.")
     }
 }
 
 #[post("/create_password", data = "<form>")]
 pub fn create_password(form: Form<CreatePassword>) -> Flash<Redirect> {
-    if !regex_email(format!("{}", form.email)) || !regex_password(format!("{}", form.password)) || form.repassword != form.password || !check_email(format!("{}", form.email)) {
-        Flash::error(Redirect::to(uri!(super::get: get_link_from_email(format!("{}", form.email)))), "Invalid form.")
+    if !regex_email(form.email.to_string()) || !regex_password(form.password.to_string()) || form.repassword != form.password || !check_email(form.email.to_string()) {
+        Flash::error(Redirect::to(uri!(super::get: get_link_from_email(form.email.to_string()))), "Invalid form.")
     } else {
-        create_user_password(format!("{}", form.email), format!("{}", form.password));
-        Flash::success(Redirect::to(uri!(super::get: get_link_from_email(format!("{}", form.email)))), "Password created.")
+        create_user_password(form.email.to_string(), form.password.to_string());
+        Flash::success(Redirect::to(uri!(super::get: get_link_from_email(form.email.to_string()))), "Password created.")
     }
 }
