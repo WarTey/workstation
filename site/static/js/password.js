@@ -19,14 +19,14 @@ function progressBar() {
     if(result.score > 0) {
         if ($('.user_card').css('height') == '510px')
             $('.user_card').css('height', '575px');
-        else
+        else if ($('.user_card').css('height') == '460px')
             $('.user_card').css('height', '525px');
         $('.progress').css('display', 'flex');
         $('#password-strength').fadeIn();
     } else {
         if ($('.user_card').css('height') == '450px' || $('.user_card').css('height') == '575px')
             $('.user_card').css('height', '510px');
-        else
+        else if ($('.user_card').css('height') == '400px' || $('.user_card').css('height') == '525px')
             $('.user_card').css('height', '460px');
         $('.progress').fadeOut();
         $('#password-strength').fadeOut();

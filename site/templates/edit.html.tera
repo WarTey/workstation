@@ -16,7 +16,11 @@
             </div>
         </div>
         <div class="d-flex justify-content-center form_container">
-            <form action="/edit_user" method="post">
+            {% if activated %}
+                <form action="/edit_user" method="post">
+            {% else %}
+                <form action="/create_password" method="post">
+            {% endif %}
                 <div class="input-group mb-3 fadeIn second">
                     <div class="input-group-append">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
