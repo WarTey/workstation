@@ -10,6 +10,7 @@ pub struct User {
     pub crack_time: String,
     pub token: String,
     pub activated: bool,
+    pub approved: bool,
     pub super_user: bool,
 }
 

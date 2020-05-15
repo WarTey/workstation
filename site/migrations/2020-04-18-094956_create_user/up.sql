@@ -7,5 +7,6 @@ CREATE TABLE users (
   crack_time VARCHAR(50) NOT NULL,
   token VARCHAR(32) NOT NULL DEFAULT md5(random()::text),
   activated BOOLEAN NOT NULL DEFAULT FALSE,
+  approved BOOLEAN NOT NULL DEFAULT FALSE,
   super_user BOOLEAN NOT NULL DEFAULT FALSE
 )

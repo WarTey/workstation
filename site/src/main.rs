@@ -17,7 +17,7 @@ use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 use rocket_contrib::json::Json;
 
-use database::{check_link, get_email_from_link, get_users, check_status};
+use database::{check_link, get_email_from_link, get_users, check_status, check_approbation};
 
 #[derive(Serialize)]
 struct TemplateContext {
@@ -61,7 +61,7 @@ fn create(flash: Option<FlashMessage>) -> Template {
 
 #[get("/<link>")]
 fn get(link: String, flash: Option<FlashMessage>) -> Result<Template, Redirect> {
-    if link.len() == 32 && check_link(link.to_string()) {
+    if link.len() == 32 && check_link(link.to_string()) && check_approbation(link.to_string()) {
         let token = link.clone();
         let context = if flash.is_some() {
             TemplateContext {

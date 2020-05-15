@@ -8,6 +8,7 @@ table! {
         crack_time -> Varchar,
         token -> Varchar,
         activated -> Bool,
+        approved -> Bool,
         super_user -> Bool,
     }
 }

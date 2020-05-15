@@ -2,7 +2,7 @@ use rocket::response::{Redirect, Flash};
 use rocket::request::Form;
 use regex::Regex;
 
-use crate::database::{add_user, update_user_link, check_email, get_link_from_email, update_user_password, create_user_password};
+use crate::database::{add_user, update_user_link, check_email, get_link_from_email, update_user_password, create_user_password, check_approbation};
 
 #[derive(FromForm)]
 pub struct ResetUser {
@@ -60,7 +60,7 @@ pub fn send_link(form: Form<ResetUser>) -> Flash<Redirect> {
 
 #[post("/edit_user", data = "<form>")]
 pub fn edit_user(form: Form<EditUser>) -> Flash<Redirect> {
-    if !regex_email(form.email.to_string()) || !regex_password(form.old_password.to_string()) || !regex_password(form.password.to_string()) || form.repassword != form.password || !check_email(form.email.to_string()) {
+    if !regex_email(form.email.to_string()) || !regex_password(form.old_password.to_string()) || !regex_password(form.password.to_string()) || form.repassword != form.password || !check_email(form.email.to_string()) || !check_approbation(get_link_from_email(form.email.to_string())) {
         Flash::error(Redirect::to(uri!(super::get: get_link_from_email(form.email.to_string()))), "Invalid form.")
     } else {
         update_user_password(form.email.to_string(), form.password.to_string());
@@ -80,7 +80,7 @@ pub fn create_user(form: Form<CreateUser>) -> Flash<Redirect> {
 
 #[post("/create_password", data = "<form>")]
 pub fn create_password(form: Form<CreatePassword>) -> Flash<Redirect> {
-    if !regex_email(form.email.to_string()) || !regex_password(form.password.to_string()) || form.repassword != form.password || !check_email(form.email.to_string()) {
+    if !regex_email(form.email.to_string()) || !regex_password(form.password.to_string()) || form.repassword != form.password || !check_email(form.email.to_string()) || !check_approbation(get_link_from_email(form.email.to_string())) {
         Flash::error(Redirect::to(uri!(super::get: get_link_from_email(form.email.to_string()))), "Invalid form.")
     } else {
         create_user_password(form.email.to_string(), form.password.to_string());

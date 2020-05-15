@@ -4,7 +4,7 @@ use dotenv::dotenv;
 use std::env;
 
 use crate::models::{NewUser, User};
-use crate::schema::users::dsl::{users, email, token, activated, pass_strength, crack_time};
+use crate::schema::users::dsl::{users, email, token, activated, approved, pass_strength, crack_time};
 
 fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -69,6 +69,15 @@ pub fn check_email(mail: String) -> bool {
 pub fn check_link(link: String) -> bool {
     let connection = establish_connection();
     users.filter(token.eq(link))
+        .limit(1)
+        .load::<User>(&connection)
+        .unwrap()
+        .len() == 1
+}
+
+pub fn check_approbation(link: String) -> bool {
+    let connection = establish_connection();
+    users.filter(token.eq(link).and(approved.eq(true)))
         .limit(1)
         .load::<User>(&connection)
         .unwrap()
