@@ -45,7 +45,7 @@ fn regex_email(mail: String) -> bool {
 }
 
 fn regex_name(name: String) -> bool {
-    Regex::new(r"^\S{2,50}$").unwrap().is_match(&name)
+    Regex::new(r"^.{2,50}$").unwrap().is_match(&name)
 }
 
 #[post("/send_link", data = "<form>")]

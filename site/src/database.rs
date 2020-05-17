@@ -15,8 +15,8 @@ fn establish_connection() -> PgConnection {
 
 pub fn add_user(first: String, last: String, mail: String) {
     let new_user = NewUser {
-        firstname: &first,
-        lastname: &last,
+        firstname: &first.to_lowercase().replace(" ", "-"),
+        lastname: &last.to_lowercase().replace(" ", "-"),
         email: &mail,
         pass_strength: "undefined".to_string(),
         crack_time: "undefined".to_string(),
