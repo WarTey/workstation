@@ -4,7 +4,7 @@ use dotenv::dotenv;
 use std::env;
 
 use crate::models::{NewUser, User};
-use crate::schema::users::dsl::{users, email, token, activated, approved, pass_strength, crack_time};
+use crate::schema::users::dsl::{users, email, token, activated, approved, pass_strength, crack_time, super_user};
 
 fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -48,6 +48,24 @@ pub fn update_user_link(mail: String) {
         .unwrap();
 }
 
+pub fn update_user_password(mail: String, password: String) {
+    let connection = establish_connection();
+    let estimate = zxcvbn::zxcvbn(&password, &[]).unwrap();
+    diesel::update(users.filter(email.eq(mail)))
+        .set((pass_strength.eq(format!("{}", estimate.score())), crack_time.eq(format!("{}", estimate.crack_times().online_no_throttling_10_per_second()))))
+        .execute(&connection)
+        .unwrap();
+}
+
+pub fn create_user_password(mail: String, password: String) {
+    let connection = establish_connection();
+    let estimate = zxcvbn::zxcvbn(&password, &[]).unwrap();
+    diesel::update(users.filter(email.eq(mail)))
+        .set((activated.eq(true), pass_strength.eq(format!("{}", estimate.score())), crack_time.eq(format!("{}", estimate.crack_times().online_no_throttling_10_per_second()))))
+        .execute(&connection)
+        .unwrap();
+}
+
 pub fn check_status(link: String) -> bool {
     let connection = establish_connection();
     users.filter(token.eq(link).and(activated.eq(true)))
@@ -84,6 +102,15 @@ pub fn check_approbation(link: String) -> bool {
         .len() == 1
 }
 
+pub fn check_super_user(mail: String) -> bool {
+    let connection = establish_connection();
+    users.filter(email.eq(mail).and(super_user.eq(true)))
+        .limit(1)
+        .load::<User>(&connection)
+        .unwrap()
+        .len() == 1
+}
+
 pub fn get_email_from_link(link: String) -> String {
     let connection = establish_connection();
     users.filter(token.eq(link))
@@ -102,22 +129,13 @@ pub fn get_link_from_email(mail: String) -> String {
         .token.to_string()
 }
 
-pub fn update_user_password(mail: String, password: String) {
+pub fn get_id_from_email(mail: String) -> String {
     let connection = establish_connection();
-    let estimate = zxcvbn::zxcvbn(&password, &[]).unwrap();
-    diesel::update(users.filter(email.eq(mail)))
-        .set((pass_strength.eq(format!("{}", estimate.score())), crack_time.eq(format!("{}", estimate.crack_times().online_no_throttling_10_per_second()))))
-        .execute(&connection)
-        .unwrap();
-}
-
-pub fn create_user_password(mail: String, password: String) {
-    let connection = establish_connection();
-    let estimate = zxcvbn::zxcvbn(&password, &[]).unwrap();
-    diesel::update(users.filter(email.eq(mail)))
-        .set((activated.eq(true), pass_strength.eq(format!("{}", estimate.score())), crack_time.eq(format!("{}", estimate.crack_times().online_no_throttling_10_per_second()))))
-        .execute(&connection)
-        .unwrap();
+    users.filter(email.eq(mail))
+        .limit(1)
+        .load::<User>(&connection)
+        .unwrap()[0]
+        .id.to_string()
 }
 
 pub fn get_users() -> Vec<User> {

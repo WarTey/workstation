@@ -11,8 +11,9 @@ mod database;
 
 use std::collections::HashMap;
 
+use rocket::outcome::IntoOutcome;
 use rocket::response::Redirect;
-use rocket::request::FlashMessage;
+use rocket::request::{FlashMessage, FromRequest, Request, Outcome};
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 use rocket_contrib::json::Json;
@@ -26,16 +27,40 @@ struct TemplateContext {
     activated: bool
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct UsersStatistics {
     email: String,
     pass_strength: String,
     crack_time: String
 }
 
+struct Admin(usize);
+
+impl<'a, 'r> FromRequest<'a, 'r> for Admin {
+    type Error = std::convert::Infallible;
+
+    fn from_request(request: &'a Request<'r>) -> Outcome<Admin, Self::Error> {
+        println!("FromRequest");
+        request.cookies()
+            .get_private("admin_id")
+            .and_then(|cookie| cookie.value().parse().ok())
+            .map(|id| Admin(id))
+            .or_forward(())
+    }
+}
+
+fn flash_message(flash: Option<FlashMessage>) -> Option<(String, String)> {
+    flash.map(|flash| {
+        let name = flash.name().to_string();
+        let message = flash.msg().to_string();
+        (name, message)
+    })
+}
+
 #[get("/statistics")]
 fn statistics() -> Option<Json<Vec<UsersStatistics>>> {
     let mut statistics: Vec<UsersStatistics> = Vec::new();
+    // Restreindre l'accès au ScreenSaver ?
     for user in get_users() {
         statistics.push(UsersStatistics {
             email: user.email,
@@ -46,16 +71,22 @@ fn statistics() -> Option<Json<Vec<UsersStatistics>>> {
     Some(Json(statistics))
 }
 
+#[get("/admin")]
+fn admin(admin: Option<Admin>, flash: Option<FlashMessage>) -> Template {
+    let mut context: HashMap<&str, Option<(String, String)>> = HashMap::new();
+    context.insert("flash", flash_message(flash));
+    if admin.is_some() {
+        println!("admin_user");
+    } else {
+        println!("admin_page");
+    }
+    Template::render("admin", context)
+}
+
 #[get("/create")]
 fn create(flash: Option<FlashMessage>) -> Template {
-    let mut context: HashMap<&str, (String, String)> = HashMap::new();
-    if flash.is_some() {
-        context.insert("flash", flash.map(|flash| {
-            let name = flash.name().to_string();
-            let message = flash.msg().to_string();
-            (name, message)
-        }).unwrap());
-    }
+    let mut context: HashMap<&str, Option<(String, String)>> = HashMap::new();
+    context.insert("flash", flash_message(flash));
     Template::render("create", context)
 }
 
@@ -63,24 +94,11 @@ fn create(flash: Option<FlashMessage>) -> Template {
 fn get(link: String, flash: Option<FlashMessage>) -> Result<Template, Redirect> {
     if link.len() == 32 && check_link(link.to_string()) && check_approbation(link.to_string()) {
         let token = link.clone();
-        let context = if flash.is_some() {
-            TemplateContext {
-                email: get_email_from_link(link),
-                flash: flash.map(|flash| {
-                    let name = flash.name().to_string();
-                    let message = flash.msg().to_string();
-                    (name, message)
-                }),
-                activated: check_status(token)
-            }
-        } else {
-            TemplateContext {
-                email: get_email_from_link(link),
-                flash: None,
-                activated: check_status(token)
-            }
-        };
-        Ok(Template::render("edit", context))
+        Ok(Template::render("edit", TemplateContext {
+            email: get_email_from_link(link),
+            flash: flash_message(flash),
+            activated: check_status(token)
+        }))
     } else {
         Err(Redirect::to(uri!(incorrect_link)))
     }
@@ -88,14 +106,8 @@ fn get(link: String, flash: Option<FlashMessage>) -> Result<Template, Redirect> 
 
 #[get("/incorrect_link")]
 fn incorrect_link(flash: Option<FlashMessage>) -> Template {
-    let mut context: HashMap<&str, (String, String)> = HashMap::new();
-    if flash.is_some() {
-        context.insert("flash", flash.map(|flash| {
-            let name = flash.name().to_string();
-            let message = flash.msg().to_string();
-            (name, message)
-        }).unwrap());
-    }
+    let mut context: HashMap<&str, Option<(String, String)>> = HashMap::new();
+    context.insert("flash", flash_message(flash));
     Template::render("url-lost", context)
 }
 
@@ -106,7 +118,7 @@ fn not_found() -> Redirect {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![statistics, create, get, incorrect_link, forms::create_password, forms::create_user, forms::edit_user, forms::send_link])
+        .mount("/", routes![statistics, admin, create, get, incorrect_link, forms::create_password, forms::create_user, forms::edit_user, forms::send_link, forms::login, forms::logout])
         .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .register(catchers![not_found])

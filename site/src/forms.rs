@@ -1,8 +1,9 @@
 use rocket::response::{Redirect, Flash};
+use rocket::http::{Cookie, Cookies};
 use rocket::request::Form;
 use regex::Regex;
 
-use crate::database::{add_user, update_user_link, check_email, get_link_from_email, update_user_password, create_user_password, check_approbation};
+use crate::database::{add_user, update_user_link, check_email, get_link_from_email, update_user_password, create_user_password, get_id_from_email, check_approbation, check_super_user};
 
 #[derive(FromForm)]
 pub struct ResetUser {
@@ -29,6 +30,12 @@ pub struct CreateUser {
     email: String,
     firstname: String,
     lastname: String
+}
+
+#[derive(FromForm)]
+pub struct Login {
+    email: String,
+    password: String
 }
 
 fn regex_password(password: String) -> bool {
@@ -86,4 +93,20 @@ pub fn create_password(form: Form<CreatePassword>) -> Flash<Redirect> {
         create_user_password(form.email.to_string(), form.password.to_string());
         Flash::success(Redirect::to(uri!(super::get: get_link_from_email(form.email.to_string()))), "Password created.")
     }
+}
+
+#[post("/login", data = "<form>")]
+pub fn login(mut cookies: Cookies<'_>, form: Form<Login>) -> Flash<Redirect> {
+    if !regex_email(form.email.to_string()) || !regex_password(form.password.to_string()) || !check_email(form.email.to_string()) || !check_super_user(form.email.to_string()) {
+        Flash::error(Redirect::to(uri!(super::admin)), "Invalid form.")
+    } else {
+        cookies.add_private(Cookie::new("admin_id", get_id_from_email(form.email.to_string())));
+        Flash::success(Redirect::to(uri!(super::admin)), "Welcome administrator.")
+    }
+}
+
+#[post("/logout")]
+pub fn logout(mut cookies: Cookies<'_>) -> Flash<Redirect> {
+    cookies.remove_private(Cookie::named("admin_id"));
+    Flash::success(Redirect::to(uri!(super::admin)), "Successfully logged out.")
 }
