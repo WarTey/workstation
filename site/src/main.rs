@@ -77,10 +77,11 @@ fn admin(admin: Option<Admin>, flash: Option<FlashMessage>) -> Template {
     context.insert("flash", flash_message(flash));
     if admin.is_some() {
         println!("admin_user");
+        Template::render("admin", context)
     } else {
         println!("admin_page");
+        Template::render("admin", context)
     }
-    Template::render("admin", context)
 }
 
 #[get("/create")]

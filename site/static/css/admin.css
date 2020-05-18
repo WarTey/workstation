@@ -1,0 +1,8 @@
+.user_card {
+    height: 90%;
+    width: 90%;
+}
+
+.wrapper {
+    overflow-y: scroll;
+}
