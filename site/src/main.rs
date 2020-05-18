@@ -18,6 +18,7 @@ use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 use rocket_contrib::json::Json;
 
+use models::User;
 use database::{check_link, get_email_from_link, get_users, check_status, check_approbation};
 
 #[derive(Serialize)]
@@ -25,6 +26,12 @@ struct TemplateContext {
     email: String,
     flash: Option<(String, String)>,
     activated: bool
+}
+
+#[derive(Serialize)]
+struct TemplateAdmin {
+    users: Option<Vec<User>>,
+    flash: Option<(String, String)>
 }
 
 #[derive(Serialize, Deserialize)]
@@ -73,8 +80,12 @@ fn statistics() -> Option<Json<Vec<UsersStatistics>>> {
 
 #[get("/admin")]
 fn admin(admin: Option<Admin>, flash: Option<FlashMessage>) -> Template {
-    let mut context: HashMap<&str, Option<(String, String)>> = HashMap::new();
-    context.insert("flash", flash_message(flash));
+    //let mut context: HashMap<&str, Option<(String, String)>> = HashMap::new();
+    //context.insert("flash", flash_message(flash));
+    let context = TemplateAdmin {
+        users: Some(get_users()),
+        flash: flash_message(flash)
+    };
     if admin.is_some() {
         println!("admin_user");
         Template::render("admin", context)

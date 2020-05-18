@@ -1,3 +1,7 @@
 $(document).ready( function () {
-    $('#example').DataTable();
+    $('#table').DataTable({
+        "scrollX": true,
+        "scrollY": '55vh',
+        "scrollCollapse": true
+    });
 });

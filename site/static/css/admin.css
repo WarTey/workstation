@@ -3,6 +3,11 @@
     width: 90%;
 }
 
-.wrapper {
+/*.wrapper {
     overflow-y: scroll;
+    overflow-x: hidden;
+}*/
+
+#table {
+    width: 100% !important;
 }
