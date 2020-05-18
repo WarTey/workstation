@@ -17,19 +17,19 @@ $(function () {
 function progressBar() {
 	var result = zxcvbn($("#password").val(), user_inputs = [])
     if(result.score > 0) {
-        if ($('.user_card').css('height') == '510px')
-            $('.user_card').css('height', '575px');
-        else if ($('.user_card').css('height') == '460px')
-            $('.user_card').css('height', '525px');
+        if ($('.user_card').css('height') == '520px')
+            $('.user_card').css('height', '590px');
+        else if ($('.user_card').css('height') == '465px')
+            $('.user_card').css('height', '535px');
         $('.progress').css('display', 'flex');
         $('#password-strength').fadeIn();
     } else {
-        if ($('.user_card').css('height') == '450px' || $('.user_card').css('height') == '575px')
-            $('.user_card').css('height', '510px');
-        else if ($('.user_card').css('height') == '400px' || $('.user_card').css('height') == '525px')
-            $('.user_card').css('height', '460px');
-        $('.progress').fadeOut();
-        $('#password-strength').fadeOut();
+        if ($('.user_card').css('height') == '455px' || $('.user_card').css('height') == '590px')
+            $('.user_card').css('height', '520px');
+        else if ($('.user_card').css('height') == '400px' || $('.user_card').css('height') == '535px')
+            $('.user_card').css('height', '465px');
+        $('.progress').css('display', 'none');
+        $('#password-strength').css('display', 'none');
     }
 
     $('#password-hacked').fadeIn();

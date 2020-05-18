@@ -82,6 +82,7 @@ html {
     color: white !important;
     border: 0 !important;
     border-radius: 0.25rem 0 0 0.25rem !important;
+    width: 40px;
 }
 
 .input_user,
