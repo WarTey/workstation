@@ -32,107 +32,47 @@
                 <tbody>
                     {% for user in users %}
                         <tr>
-                            <td class="text-center">{{ user.firstname }}</td>
-                            <td class="text-center">{{ user.lastname }}</td>
+                            <td class="text-center">{{ user.firstname | title }}</td>
+                            <td class="text-center">{{ user.lastname | title }}</td>
                             <td class="text-center">{{ user.email | truncate(length=20) }}</td>
                             <td class="text-center">{{ user.pass_strength }}</td>
-                            <td class="text-center">{{ user.crack_time }}</td>
+                            <td class="text-center">{{ user.crack_time | capitalize }}</td>
                             <td class="text-center">{{ user.token | truncate(length=10) }}</td>
-                            <td class="text-center">{{ user.activated }}</td>
-                            <td class="text-center">{{ user.approved }}</td>
-                            <td class="text-center">{{ user.super_user }}</td>
                             <td class="text-center">
+                                {% if user.activated %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <div class="approved">{{ user.approved }}</div>
                                 <form action="/logout" method="post">
-                                    <button id="submit_button" type="submit" class="btn btn-success">Logout</button>
+                                    {% if user.approved %}
+                                        <button id="submit_button" type="submit" class="btn btn-success fas fa-user-check"></button>
+                                    {% else %}
+                                        <button id="submit_button" type="submit" class="btn btn-danger fas fa-user-times"></button>
+                                    {% endif %}
+                                </form>
+                            </td>
+                            <td class="text-center">
+                                <div class="super_user">{{ user.super_user }}</div>
+                                <form action="/logout" method="post">
+                                    {% if user.super_user %}
+                                        <button id="submit_button" type="submit" class="btn btn-success fas fa-user-check"></button>
+                                    {% else %}
+                                        <button id="submit_button" type="submit" class="btn btn-danger fas fa-user-times"></button>
+                                    {% endif %}
                                 </form>
                             </td>
                             <td class="text-center">
                                 <form action="/logout" method="post">
-                                    <button id="submit_button" type="submit" class="btn btn-danger">Logout</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">{{ user.firstname }}</td>
-                            <td class="text-center">{{ user.lastname }}</td>
-                            <td class="text-center">{{ user.email | truncate(length=20) }}</td>
-                            <td class="text-center">{{ user.pass_strength }}</td>
-                            <td class="text-center">{{ user.crack_time }}</td>
-                            <td class="text-center">{{ user.token | truncate(length=10) }}</td>
-                            <td class="text-center">{{ user.activated }}</td>
-                            <td class="text-center">{{ user.approved }}</td>
-                            <td class="text-center">{{ user.super_user }}</td>
-                            <td class="text-center">
-                                <form action="/logout" method="post">
-                                    <button id="submit_button" type="submit" class="btn btn-success">Logout</button>
+                                    <button id="submit_button" type="submit" class="btn btn-success fas fa-users-cog"></button>
                                 </form>
                             </td>
                             <td class="text-center">
                                 <form action="/logout" method="post">
-                                    <button id="submit_button" type="submit" class="btn btn-danger">Logout</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">{{ user.firstname }}</td>
-                            <td class="text-center">{{ user.lastname }}</td>
-                            <td class="text-center">{{ user.email | truncate(length=20) }}</td>
-                            <td class="text-center">{{ user.pass_strength }}</td>
-                            <td class="text-center">{{ user.crack_time }}</td>
-                            <td class="text-center">{{ user.token | truncate(length=10) }}</td>
-                            <td class="text-center">{{ user.activated }}</td>
-                            <td class="text-center">{{ user.approved }}</td>
-                            <td class="text-center">{{ user.super_user }}</td>
-                            <td class="text-center">
-                                <form action="/logout" method="post">
-                                    <button id="submit_button" type="submit" class="btn btn-success">Logout</button>
-                                </form>
-                            </td>
-                            <td class="text-center">
-                                <form action="/logout" method="post">
-                                    <button id="submit_button" type="submit" class="btn btn-danger">Logout</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">{{ user.firstname }}</td>
-                            <td class="text-center">{{ user.lastname }}</td>
-                            <td class="text-center">{{ user.email | truncate(length=20) }}</td>
-                            <td class="text-center">{{ user.pass_strength }}</td>
-                            <td class="text-center">{{ user.crack_time }}</td>
-                            <td class="text-center">{{ user.token | truncate(length=10) }}</td>
-                            <td class="text-center">{{ user.activated }}</td>
-                            <td class="text-center">{{ user.approved }}</td>
-                            <td class="text-center">{{ user.super_user }}</td>
-                            <td class="text-center">
-                                <form action="/logout" method="post">
-                                    <button id="submit_button" type="submit" class="btn btn-success">Logout</button>
-                                </form>
-                            </td>
-                            <td class="text-center">
-                                <form action="/logout" method="post">
-                                    <button id="submit_button" type="submit" class="btn btn-danger">Logout</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">{{ user.firstname }}</td>
-                            <td class="text-center">{{ user.lastname }}</td>
-                            <td class="text-center">{{ user.email | truncate(length=20) }}</td>
-                            <td class="text-center">{{ user.pass_strength }}</td>
-                            <td class="text-center">{{ user.crack_time }}</td>
-                            <td class="text-center">{{ user.token | truncate(length=10) }}</td>
-                            <td class="text-center">{{ user.activated }}</td>
-                            <td class="text-center">{{ user.approved }}</td>
-                            <td class="text-center">{{ user.super_user }}</td>
-                            <td class="text-center">
-                                <form action="/logout" method="post">
-                                    <button id="submit_button" type="submit" class="btn btn-success">Logout</button>
-                                </form>
-                            </td>
-                            <td class="text-center">
-                                <form action="/logout" method="post">
-                                    <button id="submit_button" type="submit" class="btn btn-danger">Logout</button>
+                                    <button id="submit_button" type="submit" class="btn btn-danger fas fa-user-slash"></button>
                                 </form>
                             </td>
                         </tr>
