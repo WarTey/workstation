@@ -10,7 +10,7 @@ pub struct Statistic {
 #[get("/statistics")]
 pub fn statistics() -> Option<Json<Vec<Statistic>>> {
     let mut statistics: Vec<Statistic> = Vec::new();
-    for user in crate::database::get_users() {
+    for user in crate::database::get_all_users() {
         statistics.push(Statistic {
             email: user.email,
             pass_strength: user.pass_strength,

@@ -145,18 +145,16 @@ pub fn get_link_from_email(mail: String) -> String {
         .token.to_string()
 }
 
-pub fn get_id_from_email(mail: String) -> String {
-    let connection = establish_connection();
-    users.filter(email.eq(mail))
-        .limit(1)
-        .load::<User>(&connection)
-        .unwrap()[0]
-        .id.to_string()
-}
-
-pub fn get_users() -> Vec<User> {
+pub fn get_all_users() -> Vec<User> {
     let connection = establish_connection();
     users.load::<User>(&connection)
+        .unwrap()
+}
+
+pub fn get_not_all_users(mail: String) -> Vec<User> {
+    let connection = establish_connection();
+    users.filter(email.ne(mail))
+        .load::<User>(&connection)
         .unwrap()
 }
 

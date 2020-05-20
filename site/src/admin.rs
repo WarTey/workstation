@@ -5,7 +5,7 @@ use rocket::response::{Redirect, Flash};
 use rocket_contrib::templates::Template;
 
 use crate::models::User;
-use crate::database::{delete_user, update_user_link, update_user_approbation, update_super_user, check_approbation, check_email, check_super_user, get_super_users, get_link_from_email, get_id_from_email, get_users};
+use crate::database::{delete_user, update_user_link, update_user_approbation, update_super_user, check_approbation, check_email, check_super_user, get_super_users, get_link_from_email, get_not_all_users};
 use crate::regex::{regex_password, regex_email};
 
 #[derive(Serialize)]
@@ -25,14 +25,15 @@ pub struct Login {
     password: String
 }
 
-pub struct Admin(usize);
+#[derive(Debug)]
+pub struct Admin(String);
 
 impl<'a, 'r> FromRequest<'a, 'r> for Admin {
     type Error = std::convert::Infallible;
 
     fn from_request(request: &'a Request<'r>) -> Outcome<Admin, Self::Error> {
         request.cookies()
-            .get_private("admin_id")
+            .get_private("admin_email")
             .and_then(|cookie| cookie.value().parse().ok())
             .map(|id| Admin(id))
             .or_forward(())
@@ -44,20 +45,20 @@ pub fn login(mut cookies: Cookies<'_>, form: Form<Login>) -> Flash<Redirect> {
     if !regex_email(form.email.to_string()) || !regex_password(form.password.to_string()) || !check_email(form.email.to_string()) || !check_super_user(form.email.to_string()) {
         Flash::error(Redirect::to(uri!(admin)), "Invalid form.")
     } else {
-        cookies.add_private(Cookie::new("admin_id", get_id_from_email(form.email.to_string())));
+        cookies.add_private(Cookie::new("admin_email", form.email.to_string()));
         Flash::success(Redirect::to(uri!(admin)), "Welcome administrator.")
     }
 }
 
 #[post("/logout")]
 pub fn logout(mut cookies: Cookies<'_>) -> Flash<Redirect> {
-    cookies.remove_private(Cookie::named("admin_id"));
+    cookies.remove_private(Cookie::named("admin_email"));
     Flash::success(Redirect::to(uri!(admin)), "Successfully logged out.")
 }
 
 #[post("/reset_user", data = "<form>")]
-pub fn reset_user(_admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
-    if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) {
+pub fn reset_user(admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
+    if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) || form.email == admin.0 {
         Flash::error(Redirect::to(uri!(admin)), "Invalid email.")
     } else {
         update_user_link(form.email.to_string());
@@ -66,8 +67,8 @@ pub fn reset_user(_admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
 }
 
 #[post("/delete_user", data = "<form>")]
-pub fn remove_user(_admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
-    if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) {
+pub fn remove_user(admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
+    if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) || form.email == admin.0 {
         Flash::error(Redirect::to(uri!(admin)), "Invalid email.")
     } else {
         delete_user(form.email.to_string());
@@ -76,8 +77,8 @@ pub fn remove_user(_admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
 }
 
 #[post("/approve_user", data = "<form>")]
-pub fn approve_user(_admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
-    if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) {
+pub fn approve_user(admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
+    if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) || form.email == admin.0 {
         Flash::error(Redirect::to(uri!(admin)), "Invalid email.")
     } else {
         update_user_approbation(form.email.to_string(), !check_approbation(get_link_from_email(form.email.to_string())));
@@ -86,19 +87,17 @@ pub fn approve_user(_admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
 }
 
 #[post("/super_user", data = "<form>")]
-pub fn super_user(_admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
-    if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) {
+pub fn super_user(admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
+    if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) || form.email == admin.0 {
         Flash::error(Redirect::to(uri!(admin)), "Invalid email.")
+    } else if check_super_user(form.email.to_string()) && get_super_users() > 1 {
+        update_super_user(form.email.to_string(), false);
+        Flash::success(Redirect::to(uri!(admin)), "User status updated.")
+    } else if !check_super_user(form.email.to_string()) {
+        update_super_user(form.email.to_string(), true);
+        Flash::success(Redirect::to(uri!(admin)), "User status updated.")
     } else {
-        if check_super_user(form.email.to_string()) && get_super_users() > 1 {
-            update_super_user(form.email.to_string(), false);
-            Flash::success(Redirect::to(uri!(admin)), "User status updated.")
-        } else if !check_super_user(form.email.to_string()) {
-            update_super_user(form.email.to_string(), true);
-            Flash::success(Redirect::to(uri!(admin)), "User status updated.")
-        } else {
-            Flash::error(Redirect::to(uri!(admin)), "There's only one administrator left.")
-        }
+        Flash::error(Redirect::to(uri!(admin)), "There's only one administrator left.")
     }
 }
 
@@ -109,7 +108,11 @@ pub fn admin(admin: Option<Admin>, flash: Option<FlashMessage>) -> Template {
     } else {
         "login"
     }, TemplateAdmin {
-        users: Some(get_users()),
+        users: if admin.is_some() {
+            Some(get_not_all_users(admin.unwrap().0))
+        } else {
+            None
+        },
         flash: super::flash_message(flash)
     })
 }
