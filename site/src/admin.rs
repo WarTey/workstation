@@ -108,10 +108,9 @@ pub fn admin(admin: Option<Admin>, flash: Option<FlashMessage>) -> Template {
     } else {
         "login"
     }, TemplateAdmin {
-        users: if admin.is_some() {
-            Some(get_not_all_users(admin.unwrap().0))
-        } else {
-            None
+        users: match admin {
+            Some(email) => Some(get_not_all_users(email.0)),
+            _ => None,
         },
         flash: super::flash_message(flash)
     })
