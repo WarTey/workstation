@@ -47,7 +47,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="approved">{{ user.approved }}</div>
-                                <form action="/manage_user?id=3" method="post">
+                                <form action="/approve_user" method="post">
                                     <input type="text" id="email" name="email" value="{{ user.email }}" placeholder="Email" readonly="readonly" pattern="^\S{2,68}@\S{2,15}[.]\S{2,15}$" required>
                                     {% if user.approved %}
                                         <button id="submit_button" type="submit" class="btn btn-success fas fa-user-check"></button>
@@ -58,7 +58,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="super_user">{{ user.super_user }}</div>
-                                <form action="/manage_user?id=4" method="post">
+                                <form action="/super_user" method="post">
                                     <input type="text" id="email" name="email" value="{{ user.email }}" placeholder="Email" readonly="readonly" pattern="^\S{2,68}@\S{2,15}[.]\S{2,15}$" required>
                                     {% if user.super_user %}
                                         <button id="submit_button" type="submit" class="btn btn-success fas fa-user-check"></button>
@@ -68,13 +68,13 @@
                                 </form>
                             </td>
                             <td class="text-center">
-                                <form action="/manage_user?id=1" method="post">
+                                <form action="/reset_user" method="post">
                                     <input type="text" id="email" name="email" value="{{ user.email }}" placeholder="Email" readonly="readonly" pattern="^\S{2,68}@\S{2,15}[.]\S{2,15}$" required>
                                     <button id="submit_button" type="submit" class="btn login_btn fas fa-users-cog"></button>
                                 </form>
                             </td>
                             <td class="text-center">
-                                <form action="/manage_user?id=2" method="post">
+                                <form action="/delete_user" method="post">
                                     <input type="text" id="email" name="email" value="{{ user.email }}" placeholder="Email" readonly="readonly" pattern="^\S{2,68}@\S{2,15}[.]\S{2,15}$" required>
                                     <button id="submit_button" type="submit" class="btn login_btn fas fa-user-slash"></button>
                                 </form>
