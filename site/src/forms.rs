@@ -3,9 +3,9 @@ use rocket::http::{Cookie, Cookies};
 use rocket::request::Form;
 use regex::Regex;
 
-use crate::database::{add_user, update_user_link, check_email, get_link_from_email, update_user_password, create_user_password, get_id_from_email, check_approbation, check_super_user};
+use crate::database::{add_user, update_user_link, check_email, get_link_from_email, update_user_password, create_user_password, get_id_from_email, check_approbation, check_super_user, delete_user, update_user_approbation, update_super_user, get_super_users};
 
-#[derive(FromForm)]
+#[derive(FromForm, Debug)]
 pub struct ResetUser {
     email: String
 }
@@ -109,4 +109,39 @@ pub fn login(mut cookies: Cookies<'_>, form: Form<Login>) -> Flash<Redirect> {
 pub fn logout(mut cookies: Cookies<'_>) -> Flash<Redirect> {
     cookies.remove_private(Cookie::named("admin_id"));
     Flash::success(Redirect::to(uri!(super::admin)), "Successfully logged out.")
+}
+
+// Ajout de la vérification Admin -> Voir main.rs (regrouper en admin.rs)
+
+#[post("/manage_user?<id>", data = "<form>")]
+pub fn manage_user(id: usize, form: Form<ResetUser>) -> Flash<Redirect> {
+    println!("{}", id.to_string());
+    if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) {
+        Flash::error(Redirect::to(uri!(super::admin)), "Invalid email.")
+    } else {
+        if id == 1 {
+            update_user_link(form.email.to_string());
+            Flash::success(Redirect::to(uri!(super::admin)), "Link sent.")
+        } else if id == 2 {
+            delete_user(form.email.to_string());
+            Flash::success(Redirect::to(uri!(super::admin)), "User removed.")
+        } else if id == 3 {
+            if check_approbation(get_link_from_email(form.email.to_string())) {
+                update_user_approbation(form.email.to_string(), false);
+            } else {
+                update_user_approbation(form.email.to_string(), true);
+            }
+            Flash::success(Redirect::to(uri!(super::admin)), "User status updated.")
+        } else {
+            if get_super_users() < 2 {
+                Flash::error(Redirect::to(uri!(super::admin)), "There's only one administrator left.")
+            } else if check_super_user(form.email.to_string()) {
+                update_super_user(form.email.to_string(), false);
+                Flash::success(Redirect::to(uri!(super::admin)), "User status updated.")
+            } else {
+                update_super_user(form.email.to_string(), true);
+                Flash::success(Redirect::to(uri!(super::admin)), "User status updated.")
+            }
+        }
+    }
 }

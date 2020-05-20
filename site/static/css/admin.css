@@ -1,5 +1,5 @@
 .user_card {
-    height: 90%;
+    height: auto;
     width: 90%;
 }
 
@@ -7,6 +7,10 @@
     width: 100% !important;
 }
 
-.super_user, .approved {
+.super_user, .approved, #email {
     display: none;
+}
+
+.login_btn {
+    width: auto;
 }

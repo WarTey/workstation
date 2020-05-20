@@ -29,12 +29,12 @@ pub fn add_user(first: String, last: String, mail: String) {
         .unwrap();
 }
 
-/*pub fn delete_user(first: String) {
+pub fn delete_user(mail: String) {
     let connection = establish_connection();
-    diesel::delete(users.filter(firstname.like(first)))
+    diesel::delete(users.filter(email.like(mail)))
         .execute(&connection)
-        .expect("Error deleting users");
-}*/
+        .unwrap();
+}
 
 pub fn update_user_link(mail: String) {
     let connection = establish_connection();
@@ -53,6 +53,22 @@ pub fn update_user_password(mail: String, password: String) {
     let estimate = zxcvbn::zxcvbn(&password, &[]).unwrap();
     diesel::update(users.filter(email.eq(mail)))
         .set((pass_strength.eq(format!("{}", estimate.score())), crack_time.eq(format!("{}", estimate.crack_times().online_no_throttling_10_per_second()))))
+        .execute(&connection)
+        .unwrap();
+}
+
+pub fn update_user_approbation(mail: String, value: bool) {
+    let connection = establish_connection();
+    diesel::update(users.filter(email.eq(mail)))
+        .set(approved.eq(value))
+        .execute(&connection)
+        .unwrap();
+}
+
+pub fn update_super_user(mail: String, value: bool) {
+    let connection = establish_connection();
+    diesel::update(users.filter(email.eq(mail)))
+        .set(super_user.eq(value))
         .execute(&connection)
         .unwrap();
 }
@@ -142,4 +158,12 @@ pub fn get_users() -> Vec<User> {
     let connection = establish_connection();
     users.load::<User>(&connection)
         .unwrap()
+}
+
+pub fn get_super_users() -> usize {
+    let connection = establish_connection();
+    users.filter(super_user.eq(true))
+        .load::<User>(&connection)
+        .unwrap()
+        .len()
 }
