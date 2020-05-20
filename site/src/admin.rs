@@ -80,11 +80,7 @@ pub fn approve_user(_admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
     if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) {
         Flash::error(Redirect::to(uri!(admin)), "Invalid email.")
     } else {
-        update_user_approbation(form.email.to_string(), if check_approbation(get_link_from_email(form.email.to_string())) {
-            false
-        } else {
-            true
-        });
+        update_user_approbation(form.email.to_string(), !check_approbation(get_link_from_email(form.email.to_string())));
         Flash::success(Redirect::to(uri!(admin)), "User status updated.")
     }
 }
@@ -93,15 +89,16 @@ pub fn approve_user(_admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
 pub fn super_user(_admin: Admin, form: Form<ManageUser>) -> Flash<Redirect> {
     if !regex_email(form.email.to_string()) || !check_email(form.email.to_string()) {
         Flash::error(Redirect::to(uri!(admin)), "Invalid email.")
-    } else if get_super_users() < 2 {
-        Flash::error(Redirect::to(uri!(admin)), "There's only one administrator left.")
     } else {
-        update_super_user(form.email.to_string(), if check_super_user(form.email.to_string()){
-            false
+        if check_super_user(form.email.to_string()) && get_super_users() > 1 {
+            update_super_user(form.email.to_string(), false);
+            Flash::success(Redirect::to(uri!(admin)), "User status updated.")
+        } else if !check_super_user(form.email.to_string()) {
+            update_super_user(form.email.to_string(), true);
+            Flash::success(Redirect::to(uri!(admin)), "User status updated.")
         } else {
-            true
-        });
-        Flash::success(Redirect::to(uri!(admin)), "User status updated.")
+            Flash::error(Redirect::to(uri!(admin)), "There's only one administrator left.")
+        }
     }
 }
 
