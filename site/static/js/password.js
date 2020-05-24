@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     $('#password').popover({
 		container: 'body',
 		delay: {

@@ -7,7 +7,7 @@
     width: 100% !important;
 }
 
-.super_user, .approved, #email {
+.super_user, .approved, .email {
     display: none;
 }
 

@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
 	particlesJS('particles-js', {
         "particles": {
             "number": {
