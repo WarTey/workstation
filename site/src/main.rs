@@ -13,17 +13,8 @@ mod user;
 mod database;
 
 use rocket::response::Redirect;
-use rocket::request::FlashMessage;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
-
-fn flash_message(flash: Option<FlashMessage>) -> Option<(String, String)> {
-    flash.map(|flash| {
-        let name = flash.name().to_string();
-        let message = flash.msg().to_string();
-        (name, message)
-    })
-}
 
 #[catch(404)]
 fn not_found() -> Redirect {

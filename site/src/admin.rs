@@ -33,7 +33,6 @@ pub struct Login {
     password: String
 }
 
-#[derive(Debug)]
 pub struct Admin(String);
 
 impl<'a, 'r> FromRequest<'a, 'r> for Admin {
