@@ -18,7 +18,6 @@ $(document).ready(function() {
         } : {
             email: form.find('input[name="email"]').val(),
         };
-        console.log(data);
         $.ajax({
             url : form.attr('action'),
             type: form.attr('method'),
