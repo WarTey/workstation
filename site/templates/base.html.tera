@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Workstation - Accounts</title>
 
-        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
         <link rel="stylesheet" href="/static/css/style.css">
         <link rel="stylesheet" href="/static/lib/noty.css">
         <link rel="stylesheet" href="/static/lib/themes/bootstrap-v4.css">
@@ -18,14 +18,14 @@
                 {% block content %}{% endblock content %}
             </div>
         </div>
-        <script src="/static/js/jquery.min.js"></script>
-        <script src="/static/js/popper.min.js"></script>
-        <script src="/static/js/particles.min.js"></script>
-        <script src="/static/js/particles-settings.js"></script>
-        <script src="/static/js/bootstrap.min.js"></script>
-        <script src="/static/js/fontawesome.min.js"></script>
+        <script src="/static/js/lib/jquery.min.js"></script>
+        <script src="/static/js/lib/popper.min.js"></script>
+        <script src="/static/js/lib/particles.min.js"></script>
+        <script src="/static/js/lib/particles-settings.js"></script>
+        <script src="/static/js/lib/bootstrap.min.js"></script>
+        <script src="/static/js/lib/fontawesome.min.js"></script>
         <script src="/static/lib/noty.min.js"></script>
-        <script src="/static/js/zxcvbn.js"></script>
+        <script src="/static/js/lib/zxcvbn.js"></script>
         <script src="/static/js/noty.js"></script>
         {% block script %}{% endblock script %}
     </body>

@@ -181,9 +181,9 @@ html {
 }
 
 .valid {
-  color: green;
+    color: green;
 }
 
 .invalid {
-  color: red;
+    color: red;
 }

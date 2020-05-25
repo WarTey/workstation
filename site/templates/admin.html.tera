@@ -31,7 +31,7 @@
                 </thead>
                 <tbody>
                     {% for user in users %}
-                        <tr id="{{ loop.index }}">
+                        <tr>
                             <td class="text-center">{{ user.firstname | title }}</td>
                             <td class="text-center">{{ user.lastname | title }}</td>
                             <td class="text-center">{{ user.email }}</td>
