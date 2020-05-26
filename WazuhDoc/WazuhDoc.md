@@ -40,12 +40,12 @@ To perform this procedure, the curl, apt-transport-https and lsb-release package
 # systemctl status wazuh-manager
 ```
 
-##### Installing the Wazuh API
+## Installing the Wazuh API
 
 NodeJS >= 4.6.1 is required in order to run the Wazuh API. If you do not have NodeJS installed or your version is older than 4.6.1, we recommend that you add the official NodeJS repository like this:
 
 ```
-# curl -sL https://deb.nodesource.com/setup_8.x | bash -
+# curl -sL https://deb.nodesource.com/setup_10.x | bash -
 ```
 
 
@@ -94,33 +94,7 @@ Alternately, you can set the package state to hold, which will stop updates (alt
 # echo "wazuh-api hold" | sudo dpkg —set-selections
 ```
 
-
-
-Securing the Wazuh API
-By default, the communications between the Wazuh Kibana App and the Wazuh API are not encrypted. It is highly recommended that you secure the Wazuh API by following the steps below:
-
-##### Enable HTTPS:
-
-In order to enable HTTPS, you can generate your own certificate or generate it automatically by using the script /var/ossec/api/scripts/configure_api.sh.
-Note
-This script allows you to change the port used by the Wazuh API to handle the incoming HTTP requests. The port 55000 is used by default.
-Change the default credentials:
-The configure_api.sh script allows you to change the API’s user. If you did not use the script you can still change it as follows:
-
-```
-# cd /var/ossec/api/configuration/auth
-# node htpasswd -Bc -C 10 user myUserName
-```
-
-
-By default, you can access the Wazuh API by typing user “foo” and password “bar”.
-You will then need to restart the wazuh-api and wazuh-manager services for the change to take effect.
-
-##### Bind to localhost:
-
-If you do not need to access to the API externally, you should bind the API to localhost using the option *config.host* in the configuration file */var/ossec/api/configuration/config.js*.
-
-Installing Filebeat
+## Filebeat
 Filebeat is the tool on the Wazuh server that securely forwards alerts and archived events to Elasticsearch. To install it:
 
 ##### Add the Elastic repository and its GPG key:
@@ -136,21 +110,21 @@ Filebeat is the tool on the Wazuh server that securely forwards alerts and archi
 ##### Install Filebeat:
 
 ```
-# apt-get install filebeat=7.3.2
+# apt-get install filebeat=7.7.0
 ```
 
 
 ##### Download the Filebeat config file from the Wazuh repository. This is pre-configured to forward Wazuh alerts to Elasticsearch:
 
 ```
-# curl -so /etc/filebeat/filebeat.yml https://raw.githubusercontent.com/wazuh/wazuh/v3.10.2/extensions/filebeat/7.x/filebeat.yml
+# curl -so /etc/filebeat/filebeat.yml https://raw.githubusercontent.com/wazuh/wazuh/v3.12.3/extensions/filebeat/7.x/filebeat.yml
 ```
 
 
 ##### Download the alerts template for Elasticsearch:
 
 ```
-# curl -so /etc/filebeat/wazuh-template.json https://raw.githubusercontent.com/wazuh/wazuh/v3.10.2/extensions/elasticsearch/7.x/wazuh-template.json
+# curl -so /etc/filebeat/wazuh-template.json https://raw.githubusercontent.com/wazuh/wazuh/v3.12.3/extensions/elasticsearch/7.x/wazuh-template.json
 ```
 
 ##### Download the Wazuh module for Filebeat:
@@ -174,23 +148,14 @@ output.elasticsearch.hosts: [‘http://YOUR\_ELASTIC\_SERVER\_IP:9200']
 Next steps
 Once you have installed the manager, API and Filebeat, you are ready to install Elastic Stack.
 
-## Preparation
-#### Add the Elastic repository and its GPG key:
 
-```
-# apt-get install curl apt-transport-https
-# curl -s https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
-# echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | tee /etc/apt/sources.list.d/elastic-7.x.list
-# apt-get update
-```
-
-# Elasticsearch
+## Elasticsearch
 Elasticsearch is a highly scalable full-text search and analytics engine. For more information, please see Elasticsearch.
 
 #### Install the Elasticsearch package:
 
 ```
-# apt-get install elasticsearch=7.3.2
+# apt-get install elasticsearch=7.7.0
 ```
 
 Elasticsearch will only listen on the loopback interface (localhost) by default. Configure Elasticsearch to listen to a non-loopback address by editing the file */etc/elasticsearch/elasticsearch.yml* and uncommenting the setting *network.host*. Change the value to the IP you want to bind it to:
@@ -228,13 +193,14 @@ Once Elasticsearch is up and running, it is recommended to load the Filebeat tem
 ```
 
 
-Kibana
+## Kibana
+
 Kibana is a flexible and intuitive web interface for mining and visualizing the events and archives stored in Elasticsearch. Find more information at Kibana.
 
 #### Install the Kibana package:
 
 ```
-# apt-get install kibana=7.3.2
+# apt-get install kibana=7.7.0
 ```
 
 #### Install the Wazuh app plugin for Kibana:
@@ -242,18 +208,18 @@ Kibana is a flexible and intuitive web interface for mining and visualizing the 
 * Install from URL:
 
 ```
-# sudo -u kibana /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-3.10.2_7.3.2.zip
+# sudo -u kibana /usr/share/kibana/bin/kibana-plugin install https://packages.wazuh.com/wazuhapp/wazuhapp-3.12.3_7.7.0.zip
 ```
 
 * Install from the package:
 
 ```
-# sudo -u kibana /usr/share/kibana/bin/kibana-plugin install file:///path/wazuhapp-3.10.2_7.3.2.zip
+# sudo -u kibana /usr/share/kibana/bin/kibana-plugin install file:///path/wazuhapp-3.12.3_7.7.0.zip
 ```
 
 The path should have read permissions for others. E.g: The directory /tmp/ accomplishes this.
 
-Kibana will only listen on the loopback interface (localhost) by default, which means that it can be only accessed from the same machine. To access Kibana from the outside make it listen on its network IP by editing the file /etc/kibana/kibana.yml, uncomment the setting server.host, and change the value to:
+Kibana will only listen on the loopback interface (localhost) by default, which means that it can be only accessed from the same machine. To access Kibana from the outside make it listen on its network IP by editing the file */etc/kibana/kibana.yml*, uncomment the setting server.host, and change the value to:
 
 ```
 server.host: « <kibana_ip> »
@@ -263,6 +229,14 @@ server.host: « <kibana_ip> »
 
 ```
 elasticsearch.hosts: [« http://<elasticsearch_ip>:9200 »]
+```
+
+#### For installations on Kibana 7.6.X versions it is recommended to increase the heap size of Kibana to ensure the Kibana’s plugins installation:
+
+```
+# cat >> /etc/default/kibana << EOF
+NODE_OPTIONS="--max_old_space_size=2048"
+EOF
 ```
 
 #### Enable and start the Kibana service:
