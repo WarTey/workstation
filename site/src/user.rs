@@ -36,7 +36,8 @@ pub struct EditUser {
     email: String,
     old_password: String,
     password: String,
-    repassword: String
+    repassword: String,
+    wifi: bool
 }
 
 #[derive(FromForm)]
@@ -86,11 +87,18 @@ pub fn edit_user(form: Form<EditUser>) -> Json<TemplateAnswer> {
             message: Some("Invalid form.".to_string())
         })
     } else {
-        update_user_password(form.email.to_string(), form.password.to_string());
-        Json(TemplateAnswer {
-            success: true,
-            message: Some("Password updated.".to_string())
-        })
+        if form.wifi {
+            Json(TemplateAnswer {
+                success: true,
+                message: Some("Wi-Fi password updated.".to_string())
+            })
+        } else {
+            update_user_password(form.email.to_string(), form.password.to_string());
+            Json(TemplateAnswer {
+                success: true,
+                message: Some("Password updated.".to_string())
+            })
+        }
     }
 }
 

@@ -14,7 +14,8 @@ $(document).ready(function() {
             email: form.find('input[name="email"]').val(),
             old_password: form.find('input[name="old_password"]').val(),
             password: form.find('input[name="password"]').val(),
-            repassword: form.find('input[name="repassword"]').val()
+            repassword: form.find('input[name="repassword"]').val(),
+            wifi: form.find('input[name="wifi"]')[0].checked
         } : {
             email: form.find('input[name="email"]').val(),
         };
