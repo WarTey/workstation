@@ -1,6 +1,7 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 #[macro_use] extern crate rocket;
+extern crate openssl;
 #[macro_use] extern crate diesel;
 #[macro_use] extern crate serde_derive;
 
