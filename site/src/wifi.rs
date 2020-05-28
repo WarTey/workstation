@@ -7,8 +7,8 @@ use std::env;
 pub fn wifi(id: String, passwd: String){
     let user = id.clone();
     let pwd = passwd.clone();
-    update(id, passwd);
-    add_user(user, pwd);
+    update(id, passwd).unwrap();
+    add_user(user, pwd).unwrap();
 }
 
 fn update(id: String, passwd: String) -> Result<()> {
@@ -37,7 +37,7 @@ fn update(id: String, passwd: String) -> Result<()> {
     }
 
     /* On détache la connexion */
-    ldap.unbind()
+    Ok(ldap.unbind()?)
 }
 
 fn add_user(id: String, passwd: String) -> Result<()> {
@@ -68,5 +68,5 @@ fn add_user(id: String, passwd: String) -> Result<()> {
     ])?.success()?;
 
     /* On détache la connexion */
-    ldap.unbind()
+    Ok(ldap.unbind()?)
 }
