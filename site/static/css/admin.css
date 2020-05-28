@@ -1,0 +1,16 @@
+.user_card {
+    height: auto;
+    width: 90%;
+}
+
+#table {
+    width: 100% !important;
+}
+
+.super_user, .approved, .email {
+    display: none;
+}
+
+.login_btn {
+    width: auto;
+}

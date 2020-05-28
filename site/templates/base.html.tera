@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
-        <title>Tera Demo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Workstation - Accounts</title>
+
+        <link rel="stylesheet" href="/static/css/lib/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/style.css">
+        <link rel="stylesheet" href="/static/lib/noty.css">
+        <link rel="stylesheet" href="/static/lib/themes/bootstrap-v4.css">
+        {% block style %}{% endblock style %}
     </head>
     <body>
-        {% block content %}{% endblock content %}
+        <div class="h-100">
+            <div id="particles-js"></div>
+            <div class="d-flex justify-content-center h-100">
+                {% block content %}{% endblock content %}
+            </div>
+        </div>
+        <script src="/static/js/lib/jquery.min.js"></script>
+        <script src="/static/js/lib/popper.min.js"></script>
+        <script src="/static/js/lib/particles.min.js"></script>
+        <script src="/static/js/lib/particles-settings.js"></script>
+        <script src="/static/js/lib/bootstrap.min.js"></script>
+        <script src="/static/js/lib/fontawesome.min.js"></script>
+        <script src="/static/lib/noty.min.js"></script>
+        <script src="/static/js/lib/zxcvbn.js"></script>
+        <script src="/static/js/noty.js"></script>
+        {% block script %}{% endblock script %}
     </body>
 </html>
