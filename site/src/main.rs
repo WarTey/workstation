@@ -12,6 +12,7 @@ mod regex;
 mod statistics;
 mod admin;
 mod user;
+mod wifi;
 mod database;
 
 use rocket::fairing::AdHoc;

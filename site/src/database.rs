@@ -159,6 +159,24 @@ pub fn get_link_from_email(mail: String) -> String {
         .token.to_string()
 }
 
+pub fn get_firstname_from_email(mail: String) -> String {
+    let connection = establish_connection();
+    users.filter(email.eq(mail))
+        .limit(1)
+        .load::<User>(&connection)
+        .unwrap()[0]
+        .firstname.to_string()
+}
+
+pub fn get_lastname_from_email(mail: String) -> String {
+    let connection = establish_connection();
+    users.filter(email.eq(mail))
+        .limit(1)
+        .load::<User>(&connection)
+        .unwrap()[0]
+        .lastname.to_string()
+}
+
 pub fn get_all_users() -> Vec<User> {
     let connection = establish_connection();
     users.load::<User>(&connection)

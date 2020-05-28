@@ -4,7 +4,8 @@ use rocket_contrib::templates::Template;
 use rocket_contrib::json::Json;
 use std::collections::HashMap;
 
-use crate::database::{add_user, update_user_link, update_user_password, create_user_password, check_email, check_link, check_status, check_approbation, get_link_from_email, get_email_from_link};
+use crate::wifi::wifi;
+use crate::database::{add_user, update_user_link, update_user_password, create_user_password, check_email, check_link, check_status, check_approbation, get_link_from_email, get_email_from_link, get_firstname_from_email, get_lastname_from_email};
 use crate::regex::{regex_name, regex_email, regex_password};
 
 #[derive(Serialize)]
@@ -88,6 +89,7 @@ pub fn edit_user(form: Form<EditUser>) -> Json<TemplateAnswer> {
         })
     } else {
         if form.wifi {
+            wifi(format!("{}.{}", get_firstname_from_email(form.email.to_string()), get_lastname_from_email(form.email.to_string())), form.password.to_string());
             Json(TemplateAnswer {
                 success: true,
                 message: Some("Wi-Fi password updated.".to_string())

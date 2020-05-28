@@ -18,8 +18,12 @@ rand = "0.7.3"
 regex = "1"
 zxcvbn = "2"
 openssl = "0.10"
+maplit = "1.0.2"
 
 [dependencies.rocket_contrib]
 git = "https://github.com/SergioBenitez/Rocket"
 default-features = false
 features = ["tera_templates", "serve", "json", "diesel_postgres_pool"]
+
+[dependencies.ldap3]
+version = "0.7.0-alpha"
