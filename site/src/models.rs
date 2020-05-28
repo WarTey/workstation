@@ -22,4 +22,7 @@ pub struct NewUser<'a> {
     pub email: &'a str,
     pub pass_strength: String,
     pub crack_time: String,
+    pub activated: bool,
+    pub approved: bool,
+    pub super_user: bool,
 }

@@ -1,10 +1,13 @@
 use diesel::prelude::*;
 use rand::prelude::*;
 use dotenv::dotenv;
+use rocket::Rocket;
 use std::env;
 
 use crate::models::{NewUser, User};
 use crate::schema::users::dsl::{users, email, token, activated, approved, pass_strength, crack_time, super_user};
+
+embed_migrations!();
 
 fn establish_connection() -> PgConnection {
     dotenv().ok();
@@ -13,13 +16,24 @@ fn establish_connection() -> PgConnection {
     PgConnection::establish(&database_url).unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
+pub fn run_db_migrations(rocket: Rocket) -> Result<Rocket, Rocket> {
+    match embedded_migrations::run(&establish_connection()) {
+        Ok(()) => Ok(rocket),
+        Err(_e) => Err(rocket)
+    }
+}
+
 pub fn add_user(first: String, last: String, mail: String) {
+    let first_user = get_all_users().len() == 0;
     let new_user = NewUser {
         firstname: &first.to_lowercase().replace(" ", "-"),
         lastname: &last.to_lowercase().replace(" ", "-"),
         email: &mail,
         pass_strength: "undefined".to_string(),
         crack_time: "undefined".to_string(),
+        activated: first_user,
+        approved: first_user,
+        super_user: first_user,
     };
 
     let connection = establish_connection();

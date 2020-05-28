@@ -3,6 +3,7 @@
 #[macro_use] extern crate rocket;
 extern crate openssl;
 #[macro_use] extern crate diesel;
+#[macro_use] extern crate diesel_migrations;
 #[macro_use] extern crate serde_derive;
 
 mod models;
@@ -13,6 +14,7 @@ mod admin;
 mod user;
 mod database;
 
+use rocket::fairing::AdHoc;
 use rocket::response::Redirect;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
@@ -24,6 +26,7 @@ fn not_found() -> Redirect {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
+        .attach(AdHoc::on_attach("Database Migrations", database::run_db_migrations))
         .mount("/", routes![statistics::statistics, admin::login, admin::logout, admin::reset_user, admin::remove_user, admin::approve_user, admin::super_user, admin::admin, user::create_user, user::create_password, user::edit_user, user::send_link, user::create, user::get, user::incorrect_link])
         .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
